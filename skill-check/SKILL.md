@@ -364,6 +364,20 @@ Troubleshooting guide for validation failures.
 **Fix**: [How to resolve]
 ```
 
+### Badge Output
+
+When a skill passes with 0 critical issues, include this badge snippet:
+
+```markdown
+### Badge
+
+Add this to your README:
+
+[![skillcheck passed](https://raw.githubusercontent.com/olgasafonova/skillcheck-free/main/skill-check/passed.svg)](https://getskillcheck.com)
+```
+
+This links to getskillcheck.com when clicked.
+
 ---
 
 ## Check IDs Reference
