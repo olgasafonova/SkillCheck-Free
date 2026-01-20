@@ -2,11 +2,12 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Claude Code](https://img.shields.io/badge/Claude_Code-Skill-green?logo=anthropic&logoColor=white)](https://docs.anthropic.com/en/docs/claude-code)
+[![Claude Projects](https://img.shields.io/badge/Claude-Projects-orange?logo=anthropic&logoColor=white)](https://support.claude.com/en/articles/12512180-using-skills-in-claude)
 [![Cursor](https://img.shields.io/badge/Cursor-Rules-purple)](https://cursor.com/docs/context/rules)
 
 [![skillcheck passed](https://raw.githubusercontent.com/olgasafonova/skillcheck-free/main/skill-check/passed.svg)](https://getskillcheck.com)
 
-Validate AI coding assistant skills against the [agentskills specification](https://agentskills.io). Works with Claude Code and Cursor. Catch issues before your users do.
+Validate AI coding assistant skills against the [agentskills specification](https://agentskills.io). Works with Claude Code, Claude Desktop/Web, and Cursor. Catch issues before your users do.
 
 ## Why SkillCheck?
 
@@ -34,6 +35,16 @@ git clone https://github.com/olgasafonova/SkillCheck-Free.git
 cp -r SkillCheck-Free/skill-check ~/.claude/skills/
 ```
 
+### Claude Desktop/Web (Projects)
+
+1. Open [claude.ai](https://claude.ai) or Claude Desktop app
+2. Create a new Project (or open an existing one)
+3. Go to Project settings → Custom instructions
+4. Copy the contents of [`skill-check/SKILL.md`](skill-check/SKILL.md) (everything after the `---` frontmatter)
+5. Paste into the custom instructions field
+
+No file installation needed - the skill runs directly from your Project instructions.
+
 ### Cursor
 
 Copy the rule file to your project's `.cursor/rules` directory:
@@ -53,7 +64,7 @@ cp SkillCheck-Free/cursor-rules/skill-check.mdc .cursor/rules/
 
 ## Usage
 
-In Claude Code or Cursor, say any of:
+In Claude Code, Claude Desktop/Web, or Cursor, say any of:
 - "skillcheck my skill"
 - "check skill at path/to/SKILL.md"
 - "validate my skills"
