@@ -270,6 +270,50 @@ reason: No concrete format example
 
 ---
 
+## 4. Quality Patterns (Strengths)
+
+Recognize positive patterns in skills. These are reported as "strengths" rather than issues.
+
+### 8.1 Has Example Section
+
+Skills with `## Example`, `## Usage`, or `<example>` tags demonstrate expected behavior clearly.
+
+**Strength**: "Skill includes example section"
+
+### 8.2 Has Error Handling
+
+Skills documenting limitations, error cases, or edge cases set correct expectations.
+
+**Patterns detected**: `## Error`, `## Limitation`, `does not support`, `will fail if`
+
+**Strength**: "Skill documents error handling or limitations"
+
+### 8.3 Has Trigger Phrases
+
+Description includes activation triggers (Use when, Triggers on, Applies to, etc.)
+
+**Strength**: "Description includes activation triggers"
+
+### 8.4 Has Output Format
+
+Skills specifying output format with concrete examples (code blocks, JSON, tables).
+
+**Strength**: "Skill specifies output format with examples"
+
+### 8.5 Has Structured Instructions
+
+Skills using numbered steps or clear workflow sections.
+
+**Strength**: "Skill uses structured instructions"
+
+### 8.6 Has Prerequisites
+
+Skills documenting setup requirements or dependencies.
+
+**Strength**: "Skill documents prerequisites"
+
+---
+
 # Pro Tier Features
 
 The following checks are available with [SkillCheck Pro](https://getskillcheck.com):
