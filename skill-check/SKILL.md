@@ -54,7 +54,7 @@ Every SKILL.md must start with YAML frontmatter between `---` markers.
 | Field | Purpose |
 |-------|---------|
 | `license` | SPDX license identifier (MIT, Apache-2.0, etc.) |
-| `allowed-tools` | Space-separated list of tools the skill can use |
+| `allowed-tools` | Tools the skill can use (space-separated or YAML list) |
 | `compatibility` | Platform compatibility info (max 500 chars) |
 | `category` | Skill domain(s) for discovery and filtering |
 | `metadata` | Additional key-value pairs |
@@ -64,6 +64,10 @@ Every SKILL.md must start with YAML frontmatter between `---` markers.
 | `hooks` | Lifecycle hooks (PreToolUse, PostToolUse, Stop) |
 | `user-invocable` | Show in slash menu (default: true) |
 | `disable-model-invocation` | Manual-only skill |
+| `type` | Skill type indicator (community extension) |
+| `author` | Skill author (community extension) |
+| `date` | Creation/update date (community extension) |
+| `argument-hint` | Hints for skill arguments (community extension) |
 
 ### Category Validation
 
@@ -119,14 +123,18 @@ reason: uppercase and underscore not allowed
 
 Must contain:
 1. **WHAT**: Action verb explaining what skill does
-2. **WHEN**: Trigger phrase describing when to invoke the skill
+2. **WHEN**: Trigger phrase describing when to invoke the skill (can appear anywhere in description)
 
 **Action verbs**: Create, Generate, Build, Convert, Extract, Analyze, Transform, Process, Validate, Format, Export, Import, Parse, Search, Find
 
-**WHEN triggers**: "Use when", "Use for", "Invoke when", "Activate when", "Triggers on", "Run when"
+**WHEN triggers**: "Use when", "Use for", "Use this when", "Invoke when", "Activate when", "Triggers on", "Auto-activates", "Run when", "Applies to", "Helps with"
 
 <example type="valid">
 description: Generate weekly reports from Azure DevOps data. Use when user says "weekly update" or asks for stakeholder summaries.
+</example>
+
+<example type="valid">
+description: Helps with code review workflows for Pull Requests.
 </example>
 
 <example type="invalid">
@@ -136,15 +144,22 @@ reason: no WHAT verb, no WHEN trigger
 
 ### allowed-tools Validation
 
-Use space-separated format for multiple tools (per agentskills spec).
+Both space-separated and YAML list formats are valid:
 
 <example type="valid">
 allowed-tools: Read Glob Bash
 </example>
 
+<example type="valid">
+allowed-tools:
+  - Read
+  - Glob
+  - Bash
+</example>
+
 <example type="invalid">
 allowed-tools: Read, Glob, Bash
-reason: comma separation is deprecated; use spaces
+reason: comma separation is deprecated; use spaces or YAML list
 </example>
 
 ### Directory Structure Validation
@@ -217,6 +232,12 @@ Flag conflicting instructions that simultaneously require and forbid the same ac
 ### Ambiguous Terms
 
 Flag vague language that should be more specific. Terms like "multiple items" or "correct settings" lack precision. Use exact counts or specific criteria instead.
+
+**Exceptions** (not flagged):
+- Terms inside code blocks or blockquotes
+- Content in example/usage/pattern sections
+- Before/After and Good/Bad comparison lines
+- Terms followed by qualifiers (e.g., "some specific files")
 
 ### Output Format Specification
 
