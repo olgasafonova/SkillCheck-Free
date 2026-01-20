@@ -2,10 +2,11 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Claude Code](https://img.shields.io/badge/Claude_Code-Skill-green?logo=anthropic&logoColor=white)](https://docs.anthropic.com/en/docs/claude-code)
+[![Cursor](https://img.shields.io/badge/Cursor-Rules-purple)](https://cursor.com/docs/context/rules)
 
 [![skillcheck passed](https://raw.githubusercontent.com/olgasafonova/skillcheck-free/main/skill-check/passed.svg)](https://getskillcheck.com)
 
-Validate Claude Code skills against the [agentskills specification](https://agentskills.io). Catch issues before your users do.
+Validate AI coding assistant skills against the [agentskills specification](https://agentskills.io). Works with Claude Code and Cursor. Catch issues before your users do.
 
 ## Why SkillCheck?
 
@@ -17,6 +18,8 @@ SkillCheck validates:
 - Are the instructions clear and unambiguous?
 
 ## Installation
+
+### Claude Code
 
 Copy the `skill-check` folder to your Claude Code skills directory:
 
@@ -31,9 +34,26 @@ git clone https://github.com/olgasafonova/SkillCheck-Free.git
 cp -r SkillCheck-Free/skill-check ~/.claude/skills/
 ```
 
+### Cursor
+
+Copy the rule file to your project's `.cursor/rules` directory:
+
+```bash
+mkdir -p .cursor/rules
+cp cursor-rules/skill-check.mdc .cursor/rules/
+```
+
+Or clone directly:
+
+```bash
+git clone https://github.com/olgasafonova/SkillCheck-Free.git
+mkdir -p .cursor/rules
+cp SkillCheck-Free/cursor-rules/skill-check.mdc .cursor/rules/
+```
+
 ## Usage
 
-In Claude Code, say any of:
+In Claude Code or Cursor, say any of:
 - "skillcheck my skill"
 - "check skill at path/to/SKILL.md"
 - "validate my skills"
@@ -139,7 +159,7 @@ SkillCheck also recognizes good practices:
 
 ## How It Works
 
-SkillCheck Free is itself a skill. When you say "skillcheck", Claude reads the SKILL.md file containing all validation rules and applies them to your target skill. No external API calls, no binaries - just Claude following instructions.
+SkillCheck Free is itself a skill/rule file. When you say "skillcheck", your AI assistant reads the validation rules and applies them to your target skill. No external API calls, no binaries - just your assistant following instructions.
 
 ## Contributing
 
