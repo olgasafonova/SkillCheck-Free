@@ -1,5 +1,10 @@
 # SkillCheck Free
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Claude Code](https://img.shields.io/badge/Claude_Code-Skill-green?logo=anthropic&logoColor=white)](https://docs.anthropic.com/en/docs/claude-code)
+[![Cursor](https://img.shields.io/badge/Cursor-Skills-purple)](https://docs.cursor.com/context/rules-for-ai)
+[![Windsurf](https://img.shields.io/badge/Windsurf-Rules-blue)](https://docs.codeium.com/windsurf/memories#rules)
+
 [![skillcheck passed](https://raw.githubusercontent.com/olgasafonova/skillcheck-free/main/skill-check/passed.svg)](https://getskillcheck.com)
 
 Validate Claude Code skills against the [agentskills specification](https://agentskills.io). Catch issues before your users do.
