@@ -46,30 +46,48 @@ Every SKILL.md must start with YAML frontmatter between `---` markers.
 
 | Field | Required | Rules |
 |-------|----------|-------|
-| `name` | Yes | Lowercase, hyphens only, 1-64 chars, no reserved words |
+| `name` | Yes | Lowercase, hyphens only, 1-64 chars |
 | `description` | Yes | WHAT + WHEN pattern, 1-1024 chars |
 
-### Optional Fields
+### Optional Fields (Spec)
+
+Fields defined in the [agentskills.io](https://agentskills.io) specification:
 
 | Field | Purpose |
 |-------|---------|
-| `license` | SPDX license identifier (MIT, Apache-2.0, etc.) |
+| `license` | License name or reference to bundled license file |
 | `allowed-tools` | Tools the skill can use (space-separated or YAML list) |
 | `compatibility` | Platform compatibility info (max 500 chars) |
-| `category` | Skill domain(s) for discovery and filtering |
 | `metadata` | Additional key-value pairs |
+
+### Claude Code Extensions
+
+Recognized by Claude Code but not part of the agentskills.io spec. Other agents may ignore these fields.
+
+| Field | Purpose |
+|-------|---------|
+| `category` | Skill domain(s) for discovery and filtering |
 | `model` | Override model (claude-*-YYYYMMDD format) |
 | `context` | Run context ("fork" for sub-agent) |
 | `agent` | Agent type when context: fork |
 | `hooks` | Lifecycle hooks (PreToolUse, PostToolUse, Stop) |
 | `user-invocable` | Show in slash menu (default: true) |
 | `disable-model-invocation` | Manual-only skill |
-| `type` | Skill type indicator (community extension) |
-| `author` | Skill author (community extension) |
-| `date` | Creation/update date (community extension) |
-| `argument-hint` | Hints for skill arguments (community extension) |
+
+### Community Extensions
+
+Not part of any spec. Used by community tools and registries.
+
+| Field | Purpose |
+|-------|---------|
+| `type` | Skill type indicator |
+| `author` | Skill author |
+| `date` | Creation/update date |
+| `argument-hint` | Hints for skill arguments |
 
 ### Category Validation
+
+> **Note**: `category` is a Claude Code extension, not part of the agentskills.io spec. Do not flag a missing category field. Only validate format if present.
 
 **Format**: String or array of strings, lowercase letters, numbers, and hyphens only.
 
@@ -101,9 +119,7 @@ reason: consecutive hyphens not allowed
 
 **Pattern**: `^[a-z][a-z0-9-]*[a-z0-9]$`
 
-**Reserved words**: `skill`, `skills`, `claude`, `anthropic`, `mcp`, `tool`, `tools`, `agent`, `agents`, `ai`, `assistant`, `bot`
-
-**Vague terms** (avoid): `helper`, `utils`, `tools`, `misc`, `stuff`, `things`, `manager`, `handler`
+**Naming suggestions**: Avoid generic terms that don't describe what the skill does: `helper`, `utils`, `tools`, `misc`, `stuff`, `things`, `manager`, `handler`. Product-specific terms (`claude`, `anthropic`, `mcp`) are allowed but may limit portability across agents.
 
 <example type="valid">
 name: weekly-report-generator
