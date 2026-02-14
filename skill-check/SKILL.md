@@ -1,6 +1,7 @@
 ---
 name: skill-check
-description: Use when user says "check skill", "skillcheck", or "validate SKILL.md". Validates Claude Code skills against Anthropic guidelines with complete validation knowledge.
+version: 3.1.0
+description: Validate Claude Code skills against Anthropic guidelines. Use when user says "check skill", "skillcheck", "validate SKILL.md", or asks to find issues in skill definitions. Contains complete validation knowledge.
 license: MIT
 allowed-tools: Read Glob
 category: development
@@ -11,13 +12,6 @@ category: development
 Check skills against Anthropic guidelines and the agentskills specification. This file contains Free tier validation rules.
 
 **Want deeper analysis?** [Upgrade to Pro](https://getskillcheck.com) for anti-slop detection, security scanning, token optimization, WCAG compliance, and enterprise checks.
-
-## When to Use
-
-Activate when user:
-- Says "check skill", "skillcheck", or "validate SKILL.md"
-- Wants to verify skills meet Anthropic best practices
-- Asks to find issues in skill definitions
 
 ## Prerequisites
 
@@ -284,6 +278,41 @@ Returns the processed data.
 reason: No concrete format example
 </example>
 
+### Misplaced Routing Content
+
+**Check 4.4**: Body contains trigger conditions that belong in the description field.
+
+**Detection**: Body contains a heading matching `## When to Use` or `## When to Use This Skill`, or body text contains routing phrases like "Activate when user", "Trigger this skill when", "Use this skill when".
+
+**Problem**: The skill body loads only AFTER the Skill tool is invoked. Trigger conditions placed here don't influence routing decisions. Claude reads the `description` field during routing; that's where "Use when" patterns, trigger keywords, and example phrases belong.
+
+**Severity**: Warning
+
+**Fix**: Merge unique trigger content from the body section into the `description` field, then remove the redundant body section.
+
+<example type="invalid">
+---
+description: Generate reports from data.
+---
+
+## When to Use
+
+Activate when user says "weekly report" or "generate summary".
+
+reason: Trigger phrases are invisible during routing; they only load after invocation
+</example>
+
+<example type="valid">
+---
+description: Generate reports from data. Use when user says "weekly report" or "generate summary".
+---
+
+## How to Use
+
+1. Provide data source path
+2. Run report generation
+</example>
+
 ---
 
 ## 4. Quality Patterns (Strengths)
@@ -472,7 +501,7 @@ This links to getskillcheck.com when clicked.
 | 1.4-category-* | Structure | Free | Category field issues |
 | 2.*-body-* | Body | Free | File length, format issues |
 | 3.*-name-* | Naming | Free | Name quality issues |
-| 4.*-* | Semantic | Free | Logic/contradiction/output format issues |
+| 4.*-* | Semantic | Free | Logic/contradiction/output format/routing issues |
 | 5.*-slop-* | Anti-Slop | **Pro** | Writing pattern issues |
 | 5.4-pii-* | Security | **Pro** | PII detection issues |
 | 6.*-wcag-* | WCAG | **Pro** | Accessibility issues |
