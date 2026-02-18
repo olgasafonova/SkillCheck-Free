@@ -100,6 +100,8 @@ In Claude Code, Claude Desktop/Web, or Cursor, say any of:
 | 1.2-desc | Missing WHAT (action verb) or WHEN (trigger) |
 | 1.3-tools | Unknown or deprecated tool formats |
 | 1.4-category | Invalid category format |
+| 1.9-xml | XML angle brackets in frontmatter (prompt injection risk) |
+| 1.10-readme | README.md inside skill folder (docs belong in SKILL.md) |
 
 ### Body (2.x)
 | Check | What It Catches |
@@ -133,6 +135,7 @@ SkillCheck also recognizes good practices:
 | 8.4 | Specifies output format with examples |
 | 8.5 | Uses structured instructions (numbered steps) |
 | 8.6 | Documents prerequisites |
+| 8.7 | Includes negative triggers to prevent over-triggering |
 
 ## Severity Levels
 
