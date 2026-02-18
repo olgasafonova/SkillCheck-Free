@@ -1,6 +1,6 @@
 ---
 name: skill-check
-version: 3.1.0
+version: 3.2.0
 description: Validate Claude Code skills against Anthropic guidelines. Use when user says "check skill", "skillcheck", "validate SKILL.md", or asks to find issues in skill definitions. Contains complete validation knowledge.
 license: MIT
 allowed-tools: Read Glob
@@ -40,8 +40,16 @@ Every SKILL.md must start with YAML frontmatter between `---` markers.
 
 | Field | Required | Rules |
 |-------|----------|-------|
-| `name` | Yes | Lowercase, hyphens only, 1-64 chars |
+| `name` | Yes | Lowercase, hyphens only, 1-64 chars, no reserved words |
 | `description` | Yes | WHAT + WHEN pattern, 1-1024 chars |
+
+### Frontmatter Security
+
+**Check 1.9-xml-in-frontmatter** (Critical): Frontmatter values must not contain XML angle brackets (`<` or `>`). Frontmatter appears in Claude's system prompt; angle brackets could enable prompt injection.
+
+**Detection**: Scan all frontmatter string values (name, description, compatibility, etc.) for `<` or `>` characters.
+
+**Fix**: Remove angle brackets from frontmatter. Use plain text descriptions. Markdown formatting and XML tags are fine in the SKILL.md body.
 
 ### Optional Fields (Spec)
 
@@ -133,7 +141,10 @@ reason: uppercase and underscore not allowed
 
 Must contain:
 1. **WHAT**: Action verb explaining what skill does
-2. **WHEN**: Trigger phrase describing when to invoke the skill (can appear anywhere in description)
+2. **WHEN**: Trigger phrase for when to use it
+3. **Key capabilities** (recommended): Specific tasks or file types handled
+
+**Recommended structure**: `[What it does] + [When to use it] + [Key capabilities]`
 
 **Action verbs**: Create, Generate, Build, Convert, Extract, Analyze, Transform, Process, Validate, Format, Export, Import, Parse, Search, Find
 
@@ -181,6 +192,10 @@ Skills can include optional subdirectories per the agentskills spec:
 | `references/` | Additional docs (REFERENCE.md, etc.) | Files should be .md format |
 | `scripts/` | Executable code (Python, Bash, JS) | Should have execute permissions |
 | `assets/` | Static resources (templates, data) | No validation required |
+
+**Check 1.10-readme-in-folder** (Warning): Skill folder must not contain a `README.md` file. All documentation goes in SKILL.md or `references/`. For GitHub distribution, place the README at the repo root, outside the skill folder.
+
+**Detection**: Use Glob to check if `{skill-dir}/README.md` exists.
 
 **Skill path formats supported**:
 - Standard: `~/.claude/skills/{skill-name}/SKILL.md`
@@ -357,6 +372,14 @@ Skills documenting setup requirements or dependencies.
 
 **Strength**: "Skill documents prerequisites"
 
+### 8.7 Has Negative Triggers
+
+Description includes scope boundaries that prevent over-triggering.
+
+**Patterns detected**: "Do NOT use for", "Not for", "Don't use when", "not intended for", "Do not use for"
+
+**Strength**: "Description includes negative triggers to prevent over-triggering"
+
 ---
 
 # Pro Tier Features
@@ -381,6 +404,7 @@ Ensures skills stay within optimal size limits:
 - Frontmatter: 400 tokens max
 - Body: 5,000 tokens optimal, 8,000 max
 - Total: 15,000 tokens max
+- Progressive disclosure: large skills (3K+ tokens) without `references/` get a suggestion to split content
 
 **Why it matters**: Oversized skills consume context window and slow Claude down.
 
@@ -474,20 +498,6 @@ Troubleshooting guide for validation failures.
 **Fix**: [How to resolve]
 ```
 
-### Badge Output
-
-When a skill passes with 0 critical issues, include this badge snippet:
-
-```markdown
-### Badge
-
-Add this to your README:
-
-[![skillcheck passed](https://raw.githubusercontent.com/olgasafonova/skillcheck-free/main/skill-check/passed.svg)](https://getskillcheck.com)
-```
-
-This links to getskillcheck.com when clicked.
-
 ---
 
 ## Check IDs Reference
@@ -499,6 +509,8 @@ This links to getskillcheck.com when clicked.
 | 1.2-desc-* | Structure | Free | Description issues |
 | 1.3-tools-* | Structure | Free | allowed-tools issues |
 | 1.4-category-* | Structure | Free | Category field issues |
+| 1.9-xml-in-frontmatter | Structure | Free | XML angle brackets in frontmatter (security) |
+| 1.10-readme-in-folder | Structure | Free | README.md inside skill folder |
 | 2.*-body-* | Body | Free | File length, format issues |
 | 3.*-name-* | Naming | Free | Name quality issues |
 | 4.*-* | Semantic | Free | Logic/contradiction/output format/routing issues |
@@ -517,7 +529,7 @@ This links to getskillcheck.com when clicked.
 Get the complete validation suite at [getskillcheck.com](https://getskillcheck.com):
 
 - **Go binary** for CI/CD integration
-- **MCP server** for IDE integration (protocol 2024-11-05)
+- **MCP server** for IDE integration
 - **All Pro checks** (anti-slop, security, tokens, WCAG, enterprise)
 - **Auto-fix** suggestions
 - **Badge generation** for marketplace-ready skills
@@ -527,7 +539,7 @@ Get the complete validation suite at [getskillcheck.com](https://getskillcheck.c
   "mcpServers": {
     "skillcheck": {
       "command": "skillcheck-mcp",
-      "env": { "SKILLCHECK_LICENSE": "your-license-key" }
+      "env": { "SKILLCHECK_LICENSE": "SK_PRO_xxx" }
     }
   }
 }
