@@ -281,6 +281,31 @@ Returns the processed data.
 reason: No concrete format example
 </example>
 
+### Wisdom/Platitude Detection
+
+**Check 4.6-wisdom-platitude** (Suggestion): Detects generic advice ("wisdom") that lacks actionable content. Skills should contain concrete instructions, not motivational prose.
+
+**Three detection layers**:
+
+1. **Opener patterns**: Lines starting with "Remember that", "It's important to", "Keep in mind that", "Think about", "Never forget that", "Always keep in mind", "Consider the importance of"
+2. **Platitude structures**: Mid-line "[noun] is essential/crucial/important to [noun]" patterns
+3. **Vague imperatives**: "Ensure quality", "maintain standards", "strive for best practices"
+
+**Exceptions** (not flagged):
+- Content inside code blocks or blockquotes
+- Content in example/usage/pattern sections
+- Before/After and Good/Bad comparison lines
+
+### Anti-Pattern Format Lint
+
+**Check 2.8-antipattern-format** (Suggestion): Anti-pattern sections should use structured formats (tables or bullet lists) rather than wall-of-text prose.
+
+**Fires when**:
+- Anti-pattern section has a long prose line (100+ chars) with don't/avoid/never
+- Anti-pattern section has 3+ prose lines with 3+ avoidance directives
+
+**Does NOT fire when** section already uses tables or bullet lists.
+
 ---
 
 ## 4. Quality Patterns (Strengths)
@@ -468,8 +493,10 @@ This links to getskillcheck.com when clicked.
 | 1.3-tools-* | Structure | Free | allowed-tools issues |
 | 1.4-category-* | Structure | Free | Category field issues |
 | 2.*-body-* | Body | Free | File length, format issues |
+| 2.8-antipattern-format | Body | Free | Anti-pattern section format lint |
 | 3.*-name-* | Naming | Free | Name quality issues |
 | 4.*-* | Semantic | Free | Logic/contradiction/output format issues |
+| 4.6-wisdom-platitude | Semantic | Free | Wisdom/platitude detection |
 | 5.*-slop-* | Anti-Slop | **Pro** | Writing pattern issues |
 | 5.4-pii-* | Security | **Pro** | PII detection issues |
 | 6.*-wcag-* | WCAG | **Pro** | Accessibility issues |

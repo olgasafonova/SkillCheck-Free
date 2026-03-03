@@ -109,6 +109,7 @@ In Claude Code, Claude Desktop/Web, or Cursor, say any of:
 | 2.1-lines | File too long (500+ lines warning) |
 | 2.3-date | Hardcoded dates that will go stale |
 | 2.4-empty | Empty sections with no content |
+| 2.8-antipattern-format | Anti-pattern sections using prose instead of tables/bullets |
 
 ### Naming (3.x)
 | Check | What It Catches |
@@ -123,6 +124,7 @@ In Claude Code, Claude Desktop/Web, or Cursor, say any of:
 | 4.1-contradiction | Conflicting instructions |
 | 4.2-ambiguous | Vague terms like "several", "appropriate" |
 | 4.3-output | Output mentioned but no format specified |
+| 4.6-wisdom | Generic advice/platitudes instead of actionable instructions |
 
 ### Quality Patterns (8.x) - Strengths
 SkillCheck also recognizes good practices:

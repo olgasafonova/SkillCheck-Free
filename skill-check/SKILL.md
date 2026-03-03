@@ -1,6 +1,6 @@
 ---
 name: skill-check
-version: 3.2.0
+version: 3.8.0
 description: Validate Claude Code skills against Anthropic guidelines. Use when user says "check skill", "skillcheck", "validate SKILL.md", or asks to find issues in skill definitions. Contains complete validation knowledge.
 license: MIT
 allowed-tools: Read Glob
@@ -227,6 +227,35 @@ weekly-report/SKILL.md with name: weekly-reports
 reason: directory "weekly-report" doesn't match name "weekly-reports"
 </example>
 
+### Anti-Pattern Format Lint
+
+**Check 2.8-antipattern-format** (Suggestion): When a skill documents anti-patterns (sections with headers matching "anti-pattern", "what not to do", "avoid", "common mistakes", "bad practices", "pitfalls"), the content should use structured formats (tables or bullet lists) rather than wall-of-text prose.
+
+**Fires when**:
+- Anti-pattern section has a long prose line (100+ chars) containing don't/avoid/never
+- Anti-pattern section has 3+ prose lines with 3+ avoidance directives
+
+**Does NOT fire when**:
+- Section already uses tables (`| col | col |`) or bullet lists (`- item`)
+- Section header doesn't match anti-pattern keywords
+
+<example type="valid">
+## Anti-Patterns
+
+| Don't | Do Instead |
+|-------|------------|
+| Use globals | Pass parameters |
+| Skip tests | Write unit tests |
+</example>
+
+<example type="invalid">
+## Common Mistakes
+
+You should avoid using global variables because they create hidden dependencies and you should never skip error handling because it leads to silent failures in production and makes debugging very difficult.
+
+reason: Wall-of-text prose; restructure as table or bullet list
+</example>
+
 ---
 
 ## 2. Naming Quality
@@ -291,6 +320,35 @@ Returns JSON:
 Returns the processed data.
 
 reason: No concrete format example
+</example>
+
+### Wisdom/Platitude Detection
+
+**Check 4.6-wisdom-platitude** (Suggestion): Detects generic advice ("wisdom") that lacks actionable content. Skills should contain concrete instructions, not motivational prose.
+
+**Three detection layers**:
+
+1. **Opener patterns**: Lines starting with wisdom phrases like "Remember that", "It's important to", "Keep in mind that", "Think about", "Never forget that", "Always keep in mind", "Consider the importance of"
+2. **Platitude structures**: Mid-line "[noun] is essential/crucial/important to [noun]" patterns
+3. **Vague imperatives**: "Ensure quality", "maintain standards", "strive for best practices"
+
+**Exceptions** (not flagged):
+- Content inside code blocks or blockquotes
+- Content in example/usage/pattern sections
+- Before/After and Good/Bad comparison lines
+
+<example type="invalid">
+Remember that code quality is important.
+Testing is essential to software development.
+Always ensure quality in your deliverables.
+
+reason: Generic advice; replace with specific, actionable directives
+</example>
+
+<example type="valid">
+Run golangci-lint before committing.
+Write at least one test per exported function.
+Set timeout to 30 seconds for HTTP requests.
 </example>
 
 ### Misplaced Routing Content
@@ -512,8 +570,10 @@ Troubleshooting guide for validation failures.
 | 1.9-xml-in-frontmatter | Structure | Free | XML angle brackets in frontmatter (security) |
 | 1.10-readme-in-folder | Structure | Free | README.md inside skill folder |
 | 2.*-body-* | Body | Free | File length, format issues |
+| 2.8-antipattern-format | Body | Free | Anti-pattern section format lint |
 | 3.*-name-* | Naming | Free | Name quality issues |
 | 4.*-* | Semantic | Free | Logic/contradiction/output format/routing issues |
+| 4.6-wisdom-platitude | Semantic | Free | Wisdom/platitude detection |
 | 5.*-slop-* | Anti-Slop | **Pro** | Writing pattern issues |
 | 5.4-pii-* | Security | **Pro** | PII detection issues |
 | 6.*-wcag-* | WCAG | **Pro** | Accessibility issues |
