@@ -41,7 +41,7 @@ Every SKILL.md must start with YAML frontmatter between `---` markers.
 | Field | Required | Rules |
 |-------|----------|-------|
 | `name` | Yes | Lowercase, hyphens only, 1-64 chars, no reserved words |
-| `description` | Yes | WHAT + WHEN pattern, 1-1024 chars |
+| `description` | Recommended | WHAT + WHEN pattern, 1-1024 chars. Claude Code loads skills without descriptions, but a good description improves routing accuracy. |
 
 ### Frontmatter Security
 
@@ -69,7 +69,7 @@ Recognized by Claude Code but not part of the agentskills.io spec. Other agents 
 | Field | Purpose |
 |-------|---------|
 | `category` | Skill domain(s) for discovery and filtering |
-| `model` | Override model (claude-*-YYYYMMDD format) |
+| `model` | Override model. Both date-suffixed (`claude-sonnet-4-20250514`) and short-form (`claude-opus-4-6`) model IDs are valid. |
 | `context` | Run context ("fork" for sub-agent) |
 | `agent` | Agent type when context: fork |
 | `hooks` | Lifecycle hooks (PreToolUse, PostToolUse, Stop) |
@@ -200,6 +200,8 @@ Skills can include optional subdirectories per the agentskills spec:
 **Skill path formats supported**:
 - Standard: `~/.claude/skills/{skill-name}/SKILL.md`
 - Namespaced: `~/.claude/skills/{namespace}/{skill-name}/SKILL.md`
+
+**Self-referencing**: Skills can use `${CLAUDE_SKILL_DIR}` to reference their own directory (e.g., in scripts or asset paths). This variable is resolved by Claude Code at load time (v2.1.69+).
 
 **Namespace support**: Namespaces allow organizing skills by source (personal, team, project):
 - `~/.claude/skills/internal/weekly-reports/SKILL.md`
