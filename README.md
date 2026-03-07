@@ -97,7 +97,7 @@ In Claude Code, Claude Desktop/Web, or Cursor, say any of:
 | Check | What It Catches |
 |-------|-----------------|
 | 1.1-name | Invalid name format, reserved words |
-| 1.2-desc | Missing WHAT (action verb) or WHEN (trigger) |
+| 1.2-desc | Missing or weak description (WHAT verb + WHEN trigger recommended) |
 | 1.3-tools | Unknown or deprecated tool formats |
 | 1.4-category | Invalid category format |
 | 1.9-xml | XML angle brackets in frontmatter (prompt injection risk) |
@@ -138,6 +138,7 @@ SkillCheck also recognizes good practices:
 | 8.5 | Uses structured instructions (numbered steps) |
 | 8.6 | Documents prerequisites |
 | 8.7 | Includes negative triggers to prevent over-triggering |
+| 8.8 | Uses `${CLAUDE_SKILL_DIR}` for portable path references |
 
 ## Severity Levels
 
