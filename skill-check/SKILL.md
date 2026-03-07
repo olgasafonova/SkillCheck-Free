@@ -1,10 +1,11 @@
 ---
 name: skill-check
-version: 3.8.0
 description: Validate Claude Code skills against Anthropic guidelines. Use when user says "check skill", "skillcheck", "validate SKILL.md", or asks to find issues in skill definitions. Contains complete validation knowledge.
 license: MIT
 allowed-tools: Read Glob
 category: development
+metadata:
+  version: 3.8.0
 ---
 
 # SkillCheck (Free)
@@ -41,7 +42,7 @@ Every SKILL.md must start with YAML frontmatter between `---` markers.
 | Field | Required | Rules |
 |-------|----------|-------|
 | `name` | Yes | Lowercase, hyphens only, 1-64 chars, no reserved words |
-| `description` | Recommended | WHAT + WHEN pattern, 1-1024 chars. Claude Code loads skills without descriptions, but a good description improves routing accuracy. |
+| `description` | Recommended | WHAT + WHEN pattern, 1-1024 chars. Claude Code loads skills without descriptions, but a clear description improves routing accuracy. |
 
 ### Frontmatter Security
 
@@ -292,7 +293,7 @@ Flag vague language that should be more specific. Terms like "multiple items" or
 **Exceptions** (not flagged):
 - Terms inside code blocks or blockquotes
 - Content in example/usage/pattern sections
-- Before/After and Good/Bad comparison lines
+- Before/After and pass/fail comparison lines
 - Terms followed by qualifiers (e.g., "some specific files")
 
 ### Output Format Specification
@@ -332,12 +333,12 @@ reason: No concrete format example
 
 1. **Opener patterns**: Lines starting with wisdom phrases like "Remember that", "It's important to", "Keep in mind that", "Think about", "Never forget that", "Always keep in mind", "Consider the importance of"
 2. **Platitude structures**: Mid-line "[noun] is essential/crucial/important to [noun]" patterns
-3. **Vague imperatives**: "Ensure quality", "maintain standards", "strive for best practices"
+3. **Vague imperatives**: Phrases like `ensure quality`, `maintain standards`, `strive for best practices`
 
 **Exceptions** (not flagged):
 - Content inside code blocks or blockquotes
 - Content in example/usage/pattern sections
-- Before/After and Good/Bad comparison lines
+- Before/After and pass/fail comparison lines
 
 <example type="invalid">
 Remember that code quality is important.
