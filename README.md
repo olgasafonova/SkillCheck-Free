@@ -156,13 +156,14 @@ SkillCheck also recognizes good practices:
 | Structure validation | Yes | Yes |
 | Body & naming checks | Yes | Yes |
 | Semantic consistency | Yes | Yes |
-| Quality patterns (basic) | Yes | Yes |
+| Quality patterns | Yes | Yes |
 | Anti-slop detection | - | Yes |
 | Security scanning | - | Yes |
 | Token budget analysis | - | Yes |
 | WCAG accessibility | - | Yes |
 | Enterprise readiness | - | Yes |
-| Quality patterns (advanced) | - | Yes |
+| Production readiness | - | Yes |
+| Agent Readiness (L0-L3) | - | Yes |
 | MCP server integration | - | Yes |
 | CI/CD binary | - | Yes |
 
