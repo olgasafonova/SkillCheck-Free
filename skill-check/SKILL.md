@@ -5,7 +5,7 @@ license: MIT
 allowed-tools: Read Glob
 category: development
 metadata:
-  version: 3.8.0
+  version: 3.10.0
 ---
 
 # SkillCheck (Free)
@@ -506,6 +506,27 @@ For visual-output skills:
 
 **Why it matters**: Accessible output works for everyone.
 
+## Agent Readiness (Pro)
+
+Six validation pillars for agent-grade skills. Scores skills on an L0-L3 maturity scale:
+
+| Level | Score | Meaning |
+|-------|-------|---------|
+| L3 Autonomous-Ready | 90+ | Safe for unattended execution |
+| L2 Orchestratable | 75+ | Can participate in multi-agent workflows |
+| L1 Supervised | 60+ | Requires human oversight for complex tasks |
+| L0 Manual | <60 | Basic skill, no agent-readiness signals |
+
+**Pillars checked**:
+- **Reference Integrity** (13.x): File path validation, dangling reference detection
+- **Eval Readiness** (14.x): Success criteria, input/output examples, binary verdicts
+- **Orchestration Safety** (15.x): Budget caps, phase boundaries, human checkpoints for multi-agent skills
+- **Autonomy Design** (16.x): Stop conditions, safety guardrails, rollback guidance, idempotency
+- **Composability** (17.x): Input/output contracts, standalone vs composed mode awareness
+- **Observability** (18.x): Confidence signals, progress reporting, structured output
+
+**Why it matters**: As AI agents run longer and more autonomously, skills need explicit safety boundaries, eval hooks, and observability.
+
 ---
 
 ## Error Handling
@@ -584,6 +605,12 @@ Troubleshooting guide for validation failures.
 | 9.*-token-* | Tokens | **Pro** | Budget issues |
 | 10.*-enterprise-* | Enterprise | **Pro** | Org deployment issues |
 | 12.*-workflow-* | Workflow | **Pro** | Step-by-step instruction issues |
+| 13.*-ref-* | Readiness | **Pro** | Reference integrity issues |
+| 14.*-eval-* | Readiness | **Pro** | Eval readiness issues |
+| 15.*-orch-* | Readiness | **Pro** | Orchestration safety issues |
+| 16.*-autonomy-* | Readiness | **Pro** | Autonomy design issues |
+| 17.*-composability-* | Readiness | **Pro** | Composability issues |
+| 18.*-observability-* | Readiness | **Pro** | Observability issues |
 
 ---
 
