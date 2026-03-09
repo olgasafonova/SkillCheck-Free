@@ -1,11 +1,13 @@
 ---
 name: skill-check
-description: Validate Claude Code skills against Anthropic guidelines. Use when user says "check skill", "skillcheck", "validate SKILL.md", or asks to find issues in skill definitions. Contains complete validation knowledge.
+description: Validate Claude Code skills against Anthropic guidelines. Use when user says "check skill", "skillcheck", "validate SKILL.md", or asks to find issues in skill definitions. Covers structural and semantic validation. Do NOT use for anti-slop detection, security scanning, token analysis, or enterprise checks; use skill-check-pro for those.
 license: MIT
 allowed-tools: Read Glob
 category: development
+compatibility: claude-code
 metadata:
-  version: 3.10.0
+  version: 3.7.2
+  author: olgasafonova
 ---
 
 # SkillCheck (Free)
@@ -42,7 +44,7 @@ Every SKILL.md must start with YAML frontmatter between `---` markers.
 | Field | Required | Rules |
 |-------|----------|-------|
 | `name` | Yes | Lowercase, hyphens only, 1-64 chars, no reserved words |
-| `description` | Recommended | WHAT + WHEN pattern, 1-1024 chars. Claude Code loads skills without descriptions, but a clear description improves routing accuracy. |
+| `description` | Yes | WHAT + WHEN pattern, 1-1024 chars |
 
 ### Frontmatter Security
 
@@ -70,7 +72,7 @@ Recognized by Claude Code but not part of the agentskills.io spec. Other agents 
 | Field | Purpose |
 |-------|---------|
 | `category` | Skill domain(s) for discovery and filtering |
-| `model` | Override model. Both date-suffixed (`claude-sonnet-4-20250514`) and short-form (`claude-opus-4-6`) model IDs are valid. |
+| `model` | Override model (claude-*-YYYYMMDD format) |
 | `context` | Run context ("fork" for sub-agent) |
 | `agent` | Agent type when context: fork |
 | `hooks` | Lifecycle hooks (PreToolUse, PostToolUse, Stop) |
@@ -202,8 +204,6 @@ Skills can include optional subdirectories per the agentskills spec:
 - Standard: `~/.claude/skills/{skill-name}/SKILL.md`
 - Namespaced: `~/.claude/skills/{namespace}/{skill-name}/SKILL.md`
 
-**Self-referencing**: Skills can use `${CLAUDE_SKILL_DIR}` to reference their own directory (e.g., in scripts or asset paths). This variable is resolved by Claude Code at load time (v2.1.69+).
-
 **Namespace support**: Namespaces allow organizing skills by source (personal, team, project):
 - `~/.claude/skills/internal/weekly-reports/SKILL.md`
 - `~/.claude/skills/shared/code-review/SKILL.md`
@@ -229,6 +229,23 @@ my-skill/
 weekly-report/SKILL.md with name: weekly-reports
 reason: directory "weekly-report" doesn't match name "weekly-reports"
 </example>
+
+---
+
+## 2. Naming Quality
+
+Names should be descriptive compounds, not single words.
+
+<example type="invalid">
+name: generator
+reason: too generic, what does it generate?
+</example>
+
+<example type="valid">
+name: pdf-report-generator
+</example>
+
+**Length Guidelines**: Minimum 3 chars, optimal 10-30 chars, maximum 64 chars.
 
 ### Anti-Pattern Format Lint
 
@@ -261,23 +278,6 @@ reason: Wall-of-text prose; restructure as table or bullet list
 
 ---
 
-## 2. Naming Quality
-
-Names should be descriptive compounds, not single words.
-
-<example type="invalid">
-name: generator
-reason: too generic, what does it generate?
-</example>
-
-<example type="valid">
-name: pdf-report-generator
-</example>
-
-**Length Guidelines**: Minimum 3 chars, optimal 10-30 chars, maximum 64 chars.
-
----
-
 ## 3. Semantic Checks
 
 Validate logical consistency and clarity of skill instructions.
@@ -293,7 +293,7 @@ Flag vague language that should be more specific. Terms like "multiple items" or
 **Exceptions** (not flagged):
 - Terms inside code blocks or blockquotes
 - Content in example/usage/pattern sections
-- Before/After and pass/fail comparison lines
+- Before/After and correct/incorrect comparison lines
 - Terms followed by qualifiers (e.g., "some specific files")
 
 ### Output Format Specification
@@ -333,12 +333,12 @@ reason: No concrete format example
 
 1. **Opener patterns**: Lines starting with wisdom phrases like "Remember that", "It's important to", "Keep in mind that", "Think about", "Never forget that", "Always keep in mind", "Consider the importance of"
 2. **Platitude structures**: Mid-line "[noun] is essential/crucial/important to [noun]" patterns
-3. **Vague imperatives**: Phrases like `ensure quality`, `maintain standards`, `strive for best practices`
+3. **Vague imperatives**: "Ensure quality", "maintain standards", "strive for best practices"
 
 **Exceptions** (not flagged):
 - Content inside code blocks or blockquotes
 - Content in example/usage/pattern sections
-- Before/After and pass/fail comparison lines
+- Before/After and Good/Bad comparison lines
 
 <example type="invalid">
 Remember that code quality is important.
@@ -445,115 +445,30 @@ Description includes scope boundaries that prevent over-triggering.
 
 # Pro Tier Features
 
-The following checks are available with [SkillCheck Pro](https://getskillcheck.com):
+Available with [SkillCheck Pro](https://getskillcheck.com):
 
-## Anti-Slop Detection (Pro)
-
-Detects AI writing patterns that waste tokens and reduce clarity:
-- Em-dash abuse
-- Hedge stacking ("might potentially")
-- Sycophantic openers ("Great question!")
-- Filler phrases ("It's important to note that")
-- Cliche intros ("In today's fast-paced world")
-- Essay closers ("In conclusion")
-
-**Why it matters**: Skills that use slop patterns teach Claude bad habits. Pro catches 7 anti-patterns.
-
-## Token Budget Analysis (Pro)
-
-Ensures skills stay within optimal size limits:
-- Frontmatter: 400 tokens max
-- Body: 5,000 tokens optimal, 8,000 max
-- Total: 15,000 tokens max
-- Progressive disclosure: large skills (3K+ tokens) without `references/` get a suggestion to split content
-
-**Why it matters**: Oversized skills consume context window and slow Claude down.
-
-## Security Scanning (Pro)
-
-Detects security issues in technical skills:
-- Hardcoded secrets and API keys
-- Command injection vulnerabilities
-- PII in examples (emails, phone numbers, SSNs)
-- Unsafe path patterns
-
-**Why it matters**: Public skills with leaked credentials are a liability.
-
-## Workflow Clarity (Pro)
-
-Validates instruction structure:
-- Complex skills (2000+ tokens) should use numbered steps
-- Clear task decomposition
-
-**Why it matters**: Well-structured instructions perform better.
-
-## Enterprise Readiness (Pro)
-
-Checks for team/org deployment:
-- No hardcoded user paths
-- Environment variable configuration
-- Permission documentation
-- Audit trail support
-
-**Why it matters**: Enterprise skills need to work across different environments.
-
-## WCAG Compliance (Pro)
-
-For visual-output skills:
-- Color contrast ratios (4.5:1 for AA)
-- Non-color indicators
-- AI slop aesthetic detection
-
-**Why it matters**: Accessible output works for everyone.
-
-## Agent Readiness (Pro)
-
-Six validation pillars for agent-grade skills. Scores skills on an L0-L3 maturity scale:
-
-| Level | Score | Meaning |
-|-------|-------|---------|
-| L3 Autonomous-Ready | 90+ | Safe for unattended execution |
-| L2 Orchestratable | 75+ | Can participate in multi-agent workflows |
-| L1 Supervised | 60+ | Requires human oversight for complex tasks |
-| L0 Manual | <60 | Basic skill, no agent-readiness signals |
-
-**Pillars checked**:
-- **Reference Integrity** (13.x): File path validation, dangling reference detection
-- **Eval Readiness** (14.x): Success criteria, input/output examples, binary verdicts
-- **Orchestration Safety** (15.x): Budget caps, phase boundaries, human checkpoints for multi-agent skills
-- **Autonomy Design** (16.x): Stop conditions, safety guardrails, rollback guidance, idempotency
-- **Composability** (17.x): Input/output contracts, standalone vs composed mode awareness
-- **Observability** (18.x): Confidence signals, progress reporting, structured output
-
-**Why it matters**: As AI agents run longer and more autonomously, skills need explicit safety boundaries, eval hooks, and observability.
+| Check | What it catches |
+|-------|----------------|
+| Anti-Slop | Em-dash abuse, hedge stacking, sycophantic openers, filler phrases, cliche intros, essay closers |
+| Token Budget | Frontmatter >400 tokens, body >5K optimal / >8K max, total >15K |
+| Security | Hardcoded secrets, command injection, PII in examples, unsafe paths |
+| Workflow | Missing numbered steps in complex skills (2K+ tokens) |
+| Enterprise | Hardcoded user paths, missing env var config, permission gaps |
+| WCAG | Color contrast <4.5:1, color-only indicators, AI slop aesthetics |
 
 ---
 
 ## Error Handling
 
-Troubleshooting guide for validation failures.
+| Error | Fix |
+|-------|-----|
+| "No YAML frontmatter" | Add `---` markers at file start |
+| "Missing required field: name" | Add `name: your-skill-name` |
+| "Invalid name format" | Use lowercase letters, numbers, hyphens only |
+| "Description missing WHEN trigger" | Add "Use when..." clause |
+| "Unknown tool in allowed-tools" | Check spelling, use space separation |
 
-### Common Errors and Fixes
-
-| Error | Cause | Fix |
-|-------|-------|-----|
-| "No YAML frontmatter" | Missing `---` markers | Add frontmatter block at file start |
-| "Missing required field: name" | No name in frontmatter | Add `name: your-skill-name` |
-| "Invalid name format" | Uppercase, underscore, or special chars | Use lowercase letters, numbers, hyphens only |
-| "Description missing WHEN trigger" | No activation phrase | Add "Use when..." clause |
-| "Unknown tool in allowed-tools" | Typo or invalid tool name | Check tool spelling, use space separation |
-
-### Timeout Behavior
-
-- Validation completes in under 2 seconds for files under 1000 lines
-- Large skills (1000+ lines) may hit context limits
-- If validation stalls, break skill into smaller modules
-
-### Recovery Steps
-
-1. Run validation on individual sections if full validation fails
-2. Check frontmatter syntax first (most common failure point)
-3. Use `--verbose` flag with MCP server for detailed diagnostics
+If validation stalls on large files (1000+ lines), break the skill into smaller modules or check frontmatter syntax first.
 
 ---
 
@@ -567,70 +482,57 @@ Troubleshooting guide for validation failures.
 
 ---
 
-## Reporting Format
+## Check IDs Reference
 
-```markdown
-## SkillCheck Results: [skill-name]
-
-### Summary
-- Critical: X | Warnings: Y | Suggestions: Z | Passed: N
-
-### Critical Issues
-**[Check ID]** Line N: [Issue description]
-**Fix**: [How to resolve]
-```
+| ID | Category | Tier |
+|----|----------|------|
+| 1.0-dir-*, 1.1-name-*, 1.2-desc-* | Structure | Free |
+| 1.3-tools-*, 1.4-category-* | Structure | Free |
+| 1.9-xml-in-frontmatter, 1.10-readme | Structure | Free |
+| 2.*-body-*, 2.8-antipattern-format | Body | Free |
+| 3.*-name-* | Naming | Free |
+| 4.*-*, 4.6-wisdom-platitude | Semantic | Free |
+| 5.*-slop-*, 5.4-pii-* | Anti-Slop / Security | **Pro** |
+| 6.*-wcag-* | WCAG | **Pro** |
+| 7.*-security-* | Security | **Pro** |
+| 9.*-token-*, 10.*-enterprise-* | Tokens / Enterprise | **Pro** |
+| 12.*-workflow-* | Workflow | **Pro** |
 
 ---
 
-## Check IDs Reference
+## Autonomy Design
 
-| ID | Category | Tier | Description |
-|----|----------|------|-------------|
-| 1.0-dir-* | Structure | Free | Directory structure issues |
-| 1.1-name-* | Structure | Free | Name field issues |
-| 1.2-desc-* | Structure | Free | Description issues |
-| 1.3-tools-* | Structure | Free | allowed-tools issues |
-| 1.4-category-* | Structure | Free | Category field issues |
-| 1.9-xml-in-frontmatter | Structure | Free | XML angle brackets in frontmatter (security) |
-| 1.10-readme-in-folder | Structure | Free | README.md inside skill folder |
-| 2.*-body-* | Body | Free | File length, format issues |
-| 2.8-antipattern-format | Body | Free | Anti-pattern section format lint |
-| 3.*-name-* | Naming | Free | Name quality issues |
-| 4.*-* | Semantic | Free | Logic/contradiction/output format/routing issues |
-| 4.6-wisdom-platitude | Semantic | Free | Wisdom/platitude detection |
-| 5.*-slop-* | Anti-Slop | **Pro** | Writing pattern issues |
-| 5.4-pii-* | Security | **Pro** | PII detection issues |
-| 6.*-wcag-* | WCAG | **Pro** | Accessibility issues |
-| 7.*-security-* | Security | **Pro** | Path/credential/injection issues |
-| 9.*-token-* | Tokens | **Pro** | Budget issues |
-| 10.*-enterprise-* | Enterprise | **Pro** | Org deployment issues |
-| 12.*-workflow-* | Workflow | **Pro** | Step-by-step instruction issues |
-| 13.*-ref-* | Readiness | **Pro** | Reference integrity issues |
-| 14.*-eval-* | Readiness | **Pro** | Eval readiness issues |
-| 15.*-orch-* | Readiness | **Pro** | Orchestration safety issues |
-| 16.*-autonomy-* | Readiness | **Pro** | Autonomy design issues |
-| 17.*-composability-* | Readiness | **Pro** | Composability issues |
-| 18.*-observability-* | Readiness | **Pro** | Observability issues |
+**Stop condition**: Stop after reporting all issues for the target SKILL.md. Do not iterate or re-check unless the user requests it.
+
+**Budget**: Maximum attempts: 1. Single SKILL.md validation completes in one pass with maximum retries: 0. No looping.
+
+**Idempotency**: Safe to re-run. Same input produces the same severity counts and issue list.
+
+## Composability
+
+**Input/Output contract**:
+- Input: expects: path to a SKILL.md file or directory containing one.
+- Output: returns: structured report with overall score (0-100), issue list (check_id, severity, line, message, fix), and passed count.
+
+**Mode**: Runs identically standalone or in composition with other skills. Self-contained, read-only, no side effects.
+
+## Observability
+
+**Confidence level**: High confidence on structural and pattern-based checks. Semantic checks (contradiction detection, wisdom/platitude) are heuristic; ~5% false positive rate.
+
+**Progress**: Step 1 of 4: Parse. Step 2 of 4: Validate. Step 3 of 4: Score. Step 4 of 4: Report.
+
+## Phase Boundaries
+
+Phase 1: Parse — Read file, extract frontmatter.
+Phase 2: Validate — Run all Free tier checks.
+Phase 3: Score — Calculate overall score.
+Phase 4: Report — Format and return results.
 
 ---
 
 ## Upgrade to Pro
 
-Get the complete validation suite at [getskillcheck.com](https://getskillcheck.com):
+Get the complete suite at [getskillcheck.com](https://getskillcheck.com): Go binary for CI/CD, MCP server for IDE integration, all Pro checks, auto-fix, and badge generation.
 
-- **Go binary** for CI/CD integration
-- **MCP server** for IDE integration
-- **All Pro checks** (anti-slop, security, tokens, WCAG, enterprise)
-- **Auto-fix** suggestions
-- **Badge generation** for marketplace-ready skills
-
-```json
-{
-  "mcpServers": {
-    "skillcheck": {
-      "command": "skillcheck-mcp",
-      "env": { "SKILLCHECK_LICENSE": "SK_PRO_xxx" }
-    }
-  }
-}
-```
+Skills can also be distributed via the `/v1/skills` API endpoint. See [agentskills.io](https://agentskills.io) for the specification.
