@@ -101,7 +101,7 @@ In Claude Code, Claude Desktop/Web, or Cursor, say any of:
 | 1.3-tools | Unknown or deprecated tool formats |
 | 1.4-category | Invalid category format |
 | 1.9-xml | XML angle brackets in frontmatter (prompt injection risk) |
-| 1.9-arg-hints | Argument hints in description (belongs in body, not frontmatter) |
+| 1.9-arg-hints | Missing argument-hint in frontmatter when $ARGUMENTS is used |
 | 1.10-readme | README.md inside skill folder (docs belong in SKILL.md) |
 
 ### Body (2.x)
@@ -111,7 +111,7 @@ In Claude Code, Claude Desktop/Web, or Cursor, say any of:
 | 2.3-date | Hardcoded dates that will go stale |
 | 2.4-empty | Empty sections with no content |
 | 2.8-antipattern-format | Anti-pattern sections using prose instead of tables/bullets |
-| 2.9-mcp-tool-qualification | MCP tool references without "USE WHEN" guidance |
+| 2.9-mcp-tool-unqualified | Unqualified MCP tool names missing server prefix |
 
 ### Naming (3.x)
 | Check | What It Catches |
