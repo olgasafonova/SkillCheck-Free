@@ -101,6 +101,7 @@ In Claude Code, Claude Desktop/Web, or Cursor, say any of:
 | 1.3-tools | Unknown or deprecated tool formats |
 | 1.4-category | Invalid category format |
 | 1.9-xml | XML angle brackets in frontmatter (prompt injection risk) |
+| 1.9-arg-hints | Argument hints in description (belongs in body, not frontmatter) |
 | 1.10-readme | README.md inside skill folder (docs belong in SKILL.md) |
 
 ### Body (2.x)
@@ -110,6 +111,7 @@ In Claude Code, Claude Desktop/Web, or Cursor, say any of:
 | 2.3-date | Hardcoded dates that will go stale |
 | 2.4-empty | Empty sections with no content |
 | 2.8-antipattern-format | Anti-pattern sections using prose instead of tables/bullets |
+| 2.9-mcp-tool-qualification | MCP tool references without "USE WHEN" guidance |
 
 ### Naming (3.x)
 | Check | What It Catches |
@@ -117,6 +119,7 @@ In Claude Code, Claude Desktop/Web, or Cursor, say any of:
 | 3.1-vague | Generic names like "helper", "utils" |
 | 3.2-length | Names too short or too long |
 | 3.3-single | Single-word names lacking specificity |
+| 3.4-gerund | Gerund naming ("writing-helper" instead of verb-noun) |
 
 ### Semantic (4.x)
 | Check | What It Catches |
@@ -125,6 +128,7 @@ In Claude Code, Claude Desktop/Web, or Cursor, say any of:
 | 4.2-ambiguous | Vague terms like "several", "appropriate" |
 | 4.3-output | Output mentioned but no format specified |
 | 4.6-wisdom | Generic advice/platitudes instead of actionable instructions |
+| 4.7-desc-workflow-steps | Description summarizes workflow steps (causes agents to skip body) |
 
 ### Quality Patterns (8.x) - Strengths
 SkillCheck also recognizes good practices:
