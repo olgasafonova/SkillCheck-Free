@@ -1,0 +1,76 @@
+time=2026-03-07T19:05:31.633+01:00 level=INFO msg="Daemon started (interval: %v, auto-commit: %v, auto-push: %v)" !BADKEY=5s !BADKEY=false !BADKEY=false
+time=2026-03-07T19:05:31.634+01:00 level=INFO msg="using database" path=/Users/olgasafonova/Projects/SkillCheck-Free/.beads/beads.db
+time=2026-03-07T19:05:31.656+01:00 level=INFO msg="database opened" path=/Users/olgasafonova/Projects/SkillCheck-Free/.beads/beads.db backend=sqlite freshness_checking=true
+time=2026-03-07T19:05:31.656+01:00 level=INFO msg="upgrading .beads/.gitignore"
+time=2026-03-07T19:05:31.656+01:00 level=WARN msg="failed to upgrade .gitignore" error="open .beads/.gitignore: no such file or directory"
+time=2026-03-07T19:05:31.664+01:00 level=INFO msg="Repository fingerprint validated: %s" !BADKEY=3aa652ed
+time=2026-03-07T19:05:31.665+01:00 level=INFO msg="starting RPC server" socket=/Users/olgasafonova/Projects/SkillCheck-Free/.beads/bd.sock
+time=2026-03-07T19:05:31.665+01:00 level=INFO msg="RPC server ready (socket listening)"
+time=2026-03-07T19:05:31.670+01:00 level=INFO msg="registered in global registry"
+time=2026-03-07T19:05:31.670+01:00 level=INFO msg="Starting %s..." !BADKEY="sync cycle"
+time=2026-03-07T19:05:31.671+01:00 level=INFO msg="Exported to JSONL"
+time=2026-03-07T19:05:32.334+01:00 level=INFO msg="Pulled from remote"
+time=2026-03-07T19:05:32.350+01:00 level=INFO msg="Imported from JSONL"
+time=2026-03-07T19:05:32.367+01:00 level=INFO msg="Sync cycle complete"
+time=2026-03-07T19:05:32.367+01:00 level=INFO msg="monitoring parent process" pid=0
+time=2026-03-07T19:05:32.367+01:00 level=INFO msg="using event-driven mode"
+time=2026-03-07T19:05:32.367+01:00 level=INFO msg="Auto-pull disabled: use 'git pull' manually to sync remote changes"
+time=2026-03-07T19:05:32.367+01:00 level=INFO msg="Mutation detected: %s %s" create=skillcheck-free-xfi
+time=2026-03-07T19:05:32.869+01:00 level=INFO msg="Export triggered by mutation events"
+time=2026-03-07T19:05:32.869+01:00 level=INFO msg="Starting %s..." !BADKEY=export
+time=2026-03-07T19:05:32.870+01:00 level=INFO msg="Pre-export validation failed: %v" !BADKEY="refusing to export: JSONL content has changed since last import (import first to avoid data loss)"
+time=2026-03-07T19:13:19.521+01:00 level=INFO msg="Mutation detected: %s %s" status=skillcheck-free-xfi
+time=2026-03-07T19:13:20.022+01:00 level=INFO msg="Export triggered by mutation events"
+time=2026-03-07T19:13:20.022+01:00 level=INFO msg="Starting %s..." !BADKEY=export
+time=2026-03-07T19:13:20.022+01:00 level=INFO msg="Pre-export validation failed: %v" !BADKEY="refusing to export: JSONL content has changed since last import (import first to avoid data loss)"
+time=2026-03-07T19:17:28.268+01:00 level=INFO msg="JSONL removed/renamed, re-establishing watch"
+time=2026-03-07T19:17:28.320+01:00 level=INFO msg="Successfully re-established JSONL watch after %v" !BADKEY=50ms
+time=2026-03-07T19:17:28.320+01:00 level=INFO msg="JSONL file created: %s" !BADKEY=/Users/olgasafonova/Projects/SkillCheck-Free/.beads/issues.jsonl
+time=2026-03-07T19:17:29.322+01:00 level=INFO msg="Import triggered by file change"
+time=2026-03-07T19:17:29.323+01:00 level=INFO msg="Starting %s..." !BADKEY=auto-import
+time=2026-03-07T19:17:29.324+01:00 level=INFO msg="JSONL content changed, proceeding with %s..." !BADKEY=auto-import
+time=2026-03-07T19:17:29.971+01:00 level=INFO msg="Pulled from remote"
+time=2026-03-07T19:17:29.973+01:00 level=INFO msg="Imported from JSONL"
+time=2026-03-07T19:17:29.973+01:00 level=INFO msg="Auto-import complete"
+time=2026-03-07T19:31:51.853+01:00 level=INFO msg="JSONL removed/renamed, re-establishing watch"
+time=2026-03-07T19:31:51.905+01:00 level=INFO msg="Successfully re-established JSONL watch after %v" !BADKEY=50ms
+time=2026-03-07T19:31:51.905+01:00 level=INFO msg="JSONL file created: %s" !BADKEY=/Users/olgasafonova/Projects/SkillCheck-Free/.beads/issues.jsonl
+time=2026-03-07T19:31:52.907+01:00 level=INFO msg="Import triggered by file change"
+time=2026-03-07T19:31:52.908+01:00 level=INFO msg="Starting %s..." !BADKEY=auto-import
+time=2026-03-07T19:31:52.909+01:00 level=INFO msg="Skipping %s: JSONL content unchanged" !BADKEY=auto-import
+time=2026-03-07T19:58:57.149+01:00 level=INFO msg="JSONL removed/renamed, re-establishing watch"
+time=2026-03-07T19:58:57.200+01:00 level=INFO msg="Successfully re-established JSONL watch after %v" !BADKEY=50ms
+time=2026-03-07T19:58:57.200+01:00 level=INFO msg="JSONL file created: %s" !BADKEY=/Users/olgasafonova/Projects/SkillCheck-Free/.beads/issues.jsonl
+time=2026-03-07T19:58:58.200+01:00 level=INFO msg="Import triggered by file change"
+time=2026-03-07T19:58:58.201+01:00 level=INFO msg="Starting %s..." !BADKEY=auto-import
+time=2026-03-07T19:58:58.201+01:00 level=INFO msg="Skipping %s: JSONL content unchanged" !BADKEY=auto-import
+time=2026-03-09T21:20:32.484+01:00 level=INFO msg="JSONL removed/renamed, re-establishing watch"
+time=2026-03-09T21:20:32.535+01:00 level=INFO msg="Successfully re-established JSONL watch after %v" !BADKEY=50ms
+time=2026-03-09T21:20:32.535+01:00 level=INFO msg="JSONL file created: %s" !BADKEY=/Users/olgasafonova/Projects/SkillCheck-Free/.beads/issues.jsonl
+time=2026-03-09T21:20:33.537+01:00 level=INFO msg="Import triggered by file change"
+time=2026-03-09T21:20:33.539+01:00 level=INFO msg="Starting %s..." !BADKEY=auto-import
+time=2026-03-09T21:20:33.540+01:00 level=INFO msg="Skipping %s: JSONL content unchanged" !BADKEY=auto-import
+time=2026-03-09T22:00:01.399+01:00 level=INFO msg="JSONL removed/renamed, re-establishing watch"
+time=2026-03-09T22:00:01.450+01:00 level=INFO msg="Successfully re-established JSONL watch after %v" !BADKEY=50ms
+time=2026-03-09T22:00:01.450+01:00 level=INFO msg="JSONL file created: %s" !BADKEY=/Users/olgasafonova/Projects/SkillCheck-Free/.beads/issues.jsonl
+time=2026-03-09T22:00:02.452+01:00 level=INFO msg="Import triggered by file change"
+time=2026-03-09T22:00:02.453+01:00 level=INFO msg="Starting %s..." !BADKEY=auto-import
+time=2026-03-09T22:00:02.453+01:00 level=INFO msg="Skipping %s: JSONL content unchanged" !BADKEY=auto-import
+time=2026-03-09T22:01:50.994+01:00 level=INFO msg="JSONL removed/renamed, re-establishing watch"
+time=2026-03-09T22:01:51.046+01:00 level=INFO msg="Successfully re-established JSONL watch after %v" !BADKEY=50ms
+time=2026-03-09T22:01:51.046+01:00 level=INFO msg="JSONL file created: %s" !BADKEY=/Users/olgasafonova/Projects/SkillCheck-Free/.beads/issues.jsonl
+time=2026-03-09T22:01:52.048+01:00 level=INFO msg="Import triggered by file change"
+time=2026-03-09T22:01:52.048+01:00 level=INFO msg="Starting %s..." !BADKEY=auto-import
+time=2026-03-09T22:01:52.048+01:00 level=INFO msg="Skipping %s: JSONL content unchanged" !BADKEY=auto-import
+time=2026-03-10T23:44:39.363+01:00 level=INFO msg="JSONL removed/renamed, re-establishing watch"
+time=2026-03-10T23:44:39.414+01:00 level=INFO msg="Successfully re-established JSONL watch after %v" !BADKEY=50ms
+time=2026-03-10T23:44:39.414+01:00 level=INFO msg="JSONL file created: %s" !BADKEY=/Users/olgasafonova/Projects/SkillCheck-Free/.beads/issues.jsonl
+time=2026-03-10T23:44:40.416+01:00 level=INFO msg="Import triggered by file change"
+time=2026-03-10T23:44:40.418+01:00 level=INFO msg="Starting %s..." !BADKEY=auto-import
+time=2026-03-10T23:44:40.418+01:00 level=INFO msg="Skipping %s: JSONL content unchanged" !BADKEY=auto-import
+time=2026-03-10T23:53:38.525+01:00 level=INFO msg="JSONL removed/renamed, re-establishing watch"
+time=2026-03-10T23:53:38.576+01:00 level=INFO msg="Successfully re-established JSONL watch after %v" !BADKEY=50ms
+time=2026-03-10T23:53:38.576+01:00 level=INFO msg="JSONL file created: %s" !BADKEY=/Users/olgasafonova/Projects/SkillCheck-Free/.beads/issues.jsonl
+time=2026-03-10T23:53:39.578+01:00 level=INFO msg="Import triggered by file change"
+time=2026-03-10T23:53:39.578+01:00 level=INFO msg="Starting %s..." !BADKEY=auto-import
+time=2026-03-10T23:53:39.578+01:00 level=INFO msg="Skipping %s: JSONL content unchanged" !BADKEY=auto-import
