@@ -6,7 +6,7 @@ allowed-tools: Read Glob
 category: development
 compatibility: claude-code
 metadata:
-  version: 3.11.0
+  version: 3.7.2
   author: olgasafonova
 ---
 
@@ -333,12 +333,12 @@ reason: No concrete format example
 
 1. **Opener patterns**: Lines starting with wisdom phrases like "Remember that", "It's important to", "Keep in mind that", "Think about", "Never forget that", "Always keep in mind", "Consider the importance of"
 2. **Platitude structures**: Mid-line "[noun] is essential/crucial/important to [noun]" patterns
-3. **Vague imperatives**: "Ensure quality", "maintain standards", "strive for best practices"
+3. **Vague imperatives**: `"Ensure quality"`, `"maintain standards"`, `"strive for best practices"`
 
 **Exceptions** (not flagged):
 - Content inside code blocks or blockquotes
 - Content in example/usage/pattern sections
-- Before/After and Good/Bad comparison lines
+- Before/After and positive/negative comparison lines
 
 <example type="invalid">
 Remember that code quality is important.
