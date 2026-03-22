@@ -6,7 +6,7 @@ allowed-tools: Read Glob
 category: development
 compatibility: claude-code
 metadata:
-  version: 3.12.0
+  version: 3.14.0
   author: olgasafonova
 ---
 
@@ -72,12 +72,17 @@ Recognized by Claude Code but not part of the agentskills.io spec. Other agents 
 | Field | Purpose |
 |-------|---------|
 | `category` | Skill domain(s) for discovery and filtering |
-| `model` | Override model (claude-*-YYYYMMDD format) |
+| `model` | Override model (full ID like claude-opus-4-6 or alias: opus, sonnet, haiku) |
+| `effort` | Reasoning effort level: low, medium, or high |
+| `maxTurns` | Maximum agent turns (positive integer; warns above 100) |
+| `disallowedTools` | Tools the skill must not use (space-separated or YAML list) |
 | `context` | Run context ("fork" for sub-agent) |
 | `agent` | Agent type when context: fork |
 | `hooks` | Lifecycle hooks (PreToolUse, PostToolUse, Stop) |
 | `user-invocable` | Show in slash menu (default: true) |
 | `disable-model-invocation` | Manual-only skill |
+| `produces` | Artifact types this skill outputs (comma-separated) |
+| `consumes` | Artifact types this skill reads from other skills (comma-separated) |
 
 ### Community Extensions
 
@@ -118,6 +123,31 @@ reason: uppercase and underscore not allowed
 <example type="invalid">
 category: my--category
 reason: consecutive hyphens not allowed
+</example>
+
+### Artifact Passing Validation
+
+> **Note**: `produces` and `consumes` are Claude Code extensions for inter-skill artifact passing. Do not flag missing fields. Only validate format if present.
+
+**Format**: Comma-separated list of artifact type names. Each type must be lowercase with hyphens only.
+
+**Known artifact types**: `content-brief`, `knowledge-note`, `reading-log-entry`, `sift-article`
+
+**Check 1.10-artifact-types** (Warning): If `produces` or `consumes` contains a type not in the known list above, flag as a warning (not an error). New types are valid but should be registered in `rules/artifact-passing.md`.
+
+**Check 1.11-consumes-without-tools** (Warning): If a skill declares `consumes:` but its `allowed-tools` does not include `Read` or `Glob`, flag as a warning. Consuming artifacts requires reading files.
+
+<example type="valid">
+produces: content-brief, knowledge-note
+</example>
+
+<example type="valid">
+consumes: content-brief
+</example>
+
+<example type="invalid">
+produces: Content_Brief
+reason: uppercase and underscore not allowed
 </example>
 
 ### Name Validation
@@ -333,12 +363,12 @@ reason: No concrete format example
 
 1. **Opener patterns**: Lines starting with wisdom phrases like "Remember that", "It's important to", "Keep in mind that", "Think about", "Never forget that", "Always keep in mind", "Consider the importance of"
 2. **Platitude structures**: Mid-line "[noun] is essential/crucial/important to [noun]" patterns
-3. **Vague imperatives**: "Ensure quality", "maintain standards", "strive for best practices"
+3. **Vague imperatives**: `"Ensure quality"`, `"maintain standards"`, `"strive for best practices"`
 
 **Exceptions** (not flagged):
 - Content inside code blocks or blockquotes
 - Content in example/usage/pattern sections
-- Before/After and Good/Bad comparison lines
+- Before/After and positive/negative comparison lines
 
 <example type="invalid">
 Remember that code quality is important.
@@ -352,6 +382,65 @@ reason: Generic advice; replace with specific, actionable directives
 Run golangci-lint before committing.
 Write at least one test per exported function.
 Set timeout to 30 seconds for HTTP requests.
+</example>
+
+### Description Trigger Style
+
+**Check 4.8-description-trigger-style** (Suggestion): The description field should read as a trigger condition, not a capability summary. Claude scans descriptions to decide "is there a skill for this request?" A trigger-oriented description activates correctly; a summary-oriented one gets overlooked.
+
+**Detection**: Description opens with summary patterns instead of trigger patterns:
+- Summary openers (flag): "This skill", "A tool that", "Provides", "Offers", "Handles", "Manages", "Enables"
+- Trigger openers (pass): "Use when", "Generate", "Build", "Convert", "Extract", "Validate", "Run", "Create", "Find", "Search"
+
+**Does NOT fire when**:
+- Description has a summary opener but also contains a WHEN trigger phrase later ("Handles X. Use when user says Y" is fine)
+- Description starts with an action verb
+
+**Severity**: Suggestion
+
+<example type="valid">
+description: Generate weekly reports from Azure DevOps data. Use when user says "weekly update" or asks for stakeholder summaries.
+</example>
+
+<example type="invalid">
+description: This skill generates weekly reports from Azure DevOps data and provides stakeholder summaries.
+reason: Reads as capability summary, not trigger condition. Claude won't route to this reliably.
+</example>
+
+**Fix**: Rewrite to lead with action verb and include "Use when" clause. The description is a routing instruction, not documentation.
+
+### Railroading Detection
+
+**Check 4.9-railroading** (Suggestion): Skills should give Claude information and context, not dictate exact sequences. Excessive prescriptive language reduces Claude's ability to adapt to the user's actual situation.
+
+**Detection**: Count prescriptive phrases outside example blocks, code blocks, and anti-pattern sections:
+- "you must always", "always do exactly", "never deviate", "follow these exact steps", "do not change this", "this is the only way", "you are required to"
+
+**Fires when**: 5+ prescriptive phrases in non-example content.
+
+**Does NOT fire when**:
+- Prescriptive language is inside code blocks, blockquotes, or example tags
+- Prescriptive language is in anti-pattern/gotchas sections (where it describes what NOT to do)
+- Skill is a safety-critical skill (security, compliance) where strict instructions are warranted
+
+**Severity**: Suggestion
+
+<example type="valid">
+## Configuration
+
+The config file lives at `~/.config/myskill/config.json`. If missing, Claude asks the user for the required values.
+
+Common options:
+- `output_dir`: where reports land (default: current directory)
+- `format`: json or markdown (default: markdown)
+</example>
+
+<example type="invalid">
+## Configuration
+
+You must always check the config file at `~/.config/myskill/config.json`. You must never deviate from this path. Always do exactly as follows: first read the config, then validate every field. You must always use JSON format. Never change the output directory.
+
+reason: 5 prescriptive phrases; give Claude the information and let it adapt
 </example>
 
 ### Misplaced Routing Content
@@ -441,6 +530,14 @@ Description includes scope boundaries that prevent over-triggering.
 
 **Strength**: "Description includes negative triggers to prevent over-triggering"
 
+### 8.9 Has Gotchas Section
+
+Skill documents common failure points, edge cases, or footguns. Per Anthropic's internal skill design guidance, gotchas sections are "the highest-signal content in any skill."
+
+**Patterns detected**: Section headers matching "Gotchas", "Pitfalls", "Common Mistakes", "Watch Out", "Known Issues", "Caveats", "Footguns", "Common Errors"
+
+**Strength**: "Skill documents gotchas or common failure points"
+
 ---
 
 # Pro Tier Features
@@ -491,7 +588,7 @@ If validation stalls on large files (1000+ lines), break the skill into smaller 
 | 1.9-xml-in-frontmatter, 1.10-readme | Structure | Free |
 | 2.*-body-*, 2.8-antipattern-format | Body | Free |
 | 3.*-name-* | Naming | Free |
-| 4.*-*, 4.6-wisdom-platitude | Semantic | Free |
+| 4.*-*, 4.6-wisdom, 4.8-trigger-style, 4.9-railroading | Semantic | Free |
 | 5.*-slop-*, 5.4-pii-* | Anti-Slop / Security | **Pro** |
 | 6.*-wcag-* | WCAG | **Pro** |
 | 7.*-security-* | Security | **Pro** |
