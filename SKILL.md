@@ -6,7 +6,7 @@ allowed-tools: Read Glob
 category: development
 compatibility: claude-code
 metadata:
-  version: 3.14.0
+  version: 3.15.0
   author: olgasafonova
 ---
 
@@ -594,6 +594,26 @@ If validation stalls on large files (1000+ lines), break the skill into smaller 
 | 7.*-security-* | Security | **Pro** |
 | 9.*-token-*, 10.*-enterprise-* | Tokens / Enterprise | **Pro** |
 | 12.*-workflow-* | Workflow | **Pro** |
+| 13-18.*-readiness-* | Agent Readiness | **Pro** |
+| 19.1-pattern-detected | Design Pattern Classification | Free |
+| 19.2-19.7 pattern-* | Design Pattern Deep Checks | **Pro** |
+| 20.*-collision-* | Trigger Collision Detection | **Pro** |
+
+---
+
+## 5. Design Pattern Classification
+
+SkillCheck classifies each skill into one of five design patterns from the Google ADK taxonomy:
+
+- **Reviewer**: evaluates output against criteria (e.g., skill-check, code-review)
+- **Generator**: produces structured artifacts from templates (e.g., linkedin-post, brand-assets)
+- **Inversion**: asks user questions before acting (e.g., grill-me, feature-scoping)
+- **Pipeline**: chains multiple steps with checkpoints (e.g., sift, tapestry)
+- **Tool Wrapper**: wraps an API with context-aware instructions (e.g., lmwtfy)
+
+**Check 19.1-pattern-detected** (Strength): Pattern identified. Reports primary pattern and any secondary patterns. Most skills are hybrids.
+
+**Pro checks 19.2-19.7**: Validate pattern-specific requirements. A Reviewer without criteria, a Generator without output format, an Inversion without question framework, a Pipeline without stages, or a Tool Wrapper without API boundaries.
 
 ---
 
