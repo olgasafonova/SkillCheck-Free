@@ -130,6 +130,19 @@ In Claude Code, Claude Desktop/Web, or Cursor, say any of:
 | 4.6-wisdom | Generic advice/platitudes instead of actionable instructions |
 | 4.7-desc-workflow-steps | Description summarizes workflow steps (causes agents to skip body) |
 
+### Design Pattern Classification (19.x)
+SkillCheck classifies each skill into one of five design patterns from the Google ADK taxonomy:
+
+| Pattern | What It Means | Example Skills |
+|---------|--------------|----------------|
+| Reviewer | Evaluates output against criteria | skill-check, code-review |
+| Generator | Produces structured artifacts from templates | linkedin-post, brand-assets |
+| Inversion | Asks user questions before acting | grill-me, feature-scoping |
+| Pipeline | Chains multiple steps with checkpoints | sift, tapestry |
+| Tool Wrapper | Wraps an API with context-aware instructions | lmwtfy |
+
+Pro adds deep checks: validates pattern-specific requirements (criteria for Reviewers, output specs for Generators, etc.).
+
 ### Quality Patterns (8.x) - Strengths
 SkillCheck also recognizes good practices:
 
@@ -161,6 +174,9 @@ SkillCheck also recognizes good practices:
 | Body & naming checks | Yes | Yes |
 | Semantic consistency | Yes | Yes |
 | Quality patterns | Yes | Yes |
+| **Design Pattern Classification** | Detection | Deep checks |
+| Artifact Contract Validation | - | Yes |
+| Trigger Collision Detection | - | Yes |
 | Anti-slop detection | - | Yes |
 | Security scanning | - | Yes |
 | Token budget analysis | - | Yes |
