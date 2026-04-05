@@ -1,6 +1,6 @@
 ---
 name: skill-check
-description: Validate Claude Code skills against Anthropic guidelines. Use when user says "check skill", "skillcheck", "validate SKILL.md", or asks to find issues in skill definitions. Covers structural and semantic validation. Do NOT use for anti-slop detection, security scanning, token analysis, or enterprise checks; use skill-check-pro for those.
+description: Validate Claude Code skills against Anthropic guidelines. Use when user says "check skill", "skillcheck", "validate SKILL.md", or asks to find issues in skill definitions. Covers structural and semantic validation. Do NOT use for anti-slop detection, security scanning, token analysis, enterprise checks, or Eval Kit generation; use skill-check-pro for those. Do NOT use for LinkedIn skill engagement; use skillcheck-engage for that.
 license: MIT
 allowed-tools: Read Glob
 category: development
@@ -631,7 +631,23 @@ SkillCheck classifies each skill into one of five design patterns from the Googl
 - Input: expects: path to a SKILL.md file or directory containing one.
 - Output: returns: structured report with overall score (0-100), issue list (check_id, severity, line, message, fix), and passed count.
 
+**Output structure**:
+
+```
+# SkillCheck Report: {skill-name}
+## Summary (score, issue/strength counts)
+## Issues (check_id, severity, line, message, fix per issue)
+## Strengths (check_id, detail per strength)
+```
+
 **Mode**: Runs identically standalone or in composition with other skills. Self-contained, read-only, no side effects.
+
+## Platform Requirements
+
+- Code Execution: No
+- File Creation: No
+- Network Access: No
+- Required tools: Read, Glob
 
 ## Observability
 
@@ -645,6 +661,15 @@ Phase 1: Parse — Read file, extract frontmatter.
 Phase 2: Validate — Run all Free tier checks.
 Phase 3: Score — Calculate overall score.
 Phase 4: Report — Format and return results.
+
+---
+
+## Gotchas
+
+- YAML frontmatter with multi-line descriptions may trigger false positives on line-based checks. Use a single-line description or pipe (`|`) syntax.
+- Skills using non-standard frontmatter fields (custom extensions) get informational notices, not errors. These are expected and safe to ignore.
+- Check 4.6 (wisdom/platitude detection) has a ~5% false positive rate on technical content that uses advisory language. If flagged incorrectly, the content is fine; the heuristic is conservative.
+- The "misplaced routing" check (4.4) fires on body content that contains trigger phrases. If your body has a "Quick Start" section showing example invocations, wrap them in code blocks or `<example>` tags to avoid false positives.
 
 ---
 
