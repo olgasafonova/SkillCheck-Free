@@ -6,7 +6,7 @@ allowed-tools: Read Glob
 category: development
 compatibility: claude-code
 metadata:
-  version: 3.15.0
+  version: 3.17.0
   author: olgasafonova
 ---
 
@@ -14,7 +14,7 @@ metadata:
 
 Check skills against Anthropic guidelines and the agentskills specification. This file contains Free tier validation rules.
 
-**Want deeper analysis?** [Upgrade to Pro](https://getskillcheck.com) for anti-slop detection, security scanning, token optimization, WCAG compliance, and enterprise checks.
+**Want deeper analysis?** [Upgrade to Pro](https://getskillcheck.com) for anti-slop detection, security scanning, token optimization, WCAG compliance, enterprise checks, and Eval Kit (auto-generated test prompts for your skills).
 
 ## Prerequisites
 

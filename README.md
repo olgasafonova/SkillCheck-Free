@@ -177,6 +177,7 @@ SkillCheck also recognizes good practices:
 | **Design Pattern Classification** | Detection | Deep checks |
 | Artifact Contract Validation | - | Yes |
 | Trigger Collision Detection | - | Yes |
+| **Eval Kit (test prompt generation)** | - | Yes |
 | Anti-slop detection | - | Yes |
 | Security scanning | - | Yes |
 | Token budget analysis | - | Yes |
