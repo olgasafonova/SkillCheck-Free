@@ -157,6 +157,13 @@ SkillCheck also recognizes good practices:
 | 8.7 | Includes negative triggers to prevent over-triggering |
 | 8.8 | Uses `${CLAUDE_SKILL_DIR}` for portable path references |
 
+### Knowledge Density (22.x)
+| Check | What It Catches |
+|-------|-----------------|
+| 22.7 | Gotchas/troubleshooting sections with only generic filler and no concrete knowledge |
+
+Pro adds: threshold detection (22.1), consequence patterns (22.2), experience markers (22.3), debugging sequences (22.4), decision density (22.5), and concrete code references (22.6).
+
 ## Severity Levels
 
 | Level | Meaning | Action |
@@ -175,6 +182,7 @@ SkillCheck also recognizes good practices:
 | Semantic consistency | Yes | Yes |
 | Quality patterns | Yes | Yes |
 | **Design Pattern Classification** | Detection | Deep checks |
+| **Knowledge Density** | Hollow content | Full density analysis |
 | Artifact Contract Validation | - | Yes |
 | Trigger Collision Detection | - | Yes |
 | **Eval Kit (test prompt generation)** | - | Yes |

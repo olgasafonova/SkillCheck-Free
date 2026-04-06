@@ -497,6 +497,41 @@ If validation stalls on large files (1000+ lines), break the skill into smaller 
 | 7.*-security-* | Security | **Pro** |
 | 9.*-token-*, 10.*-enterprise-* | Tokens / Enterprise | **Pro** |
 | 12.*-workflow-* | Workflow | **Pro** |
+| 22.7-hollow-content | Knowledge Density | Free |
+| 22.1-22.6 | Knowledge Density | **Pro** |
+
+---
+
+## 5. Knowledge Density (22.7)
+
+Detect gotchas/troubleshooting sections that promise specifics but deliver only generic filler.
+
+**How it works**: Find sections with headers matching gotchas, troubleshooting, guidelines, tips, caveats, pitfalls, or common issues/mistakes. For each section, count hollow filler phrases and density signals. If the section has 3+ hollow phrases and 0 density signals, flag it.
+
+**Hollow filler phrases** (patterns that add no concrete knowledge):
+- "Follow team/company standards/conventions/guidelines"
+- "Ensure/make sure proper/appropriate handling/management"
+- "Handle ... appropriately/properly/correctly/gracefully"
+- "Consider/take into account ... factors/aspects/considerations"
+- "Use appropriate/suitable methods/approaches/techniques"
+- "Maintain/ensure high/good quality/standards/practices"
+- "Follow established/standard patterns/practices/procedures"
+
+**Density signals** (any of these in the section cancels the hollow flag):
+- Specific thresholds with constraint context (e.g., "max pageSize 100", "timeout 30 seconds")
+- Consequence patterns (e.g., "never X because Y", "must X otherwise Y")
+- Experience markers (e.g., "we discovered", "in practice", "the gotcha is")
+- Debugging steps (e.g., "first check X, then verify Y")
+- Decision branches (e.g., "if X then use Y", "prefer A > B > C")
+- Concrete file/function references (e.g., "handlers.go", "func RunPipeline")
+
+**ID**: 22.7-hollow-content
+**Severity**: Suggestion
+**Fix**: Replace generic advice with specific thresholds, consequences, or debugging steps
+
+**Skip**: code blocks, frontmatter, table header separators.
+
+Pro adds density strength checks (22.1-22.6) that reward skills containing specific thresholds, consequence explanations, experience markers, debugging sequences, decision logic, and concrete code references. See [getskillcheck.com](https://getskillcheck.com).
 
 ---
 
