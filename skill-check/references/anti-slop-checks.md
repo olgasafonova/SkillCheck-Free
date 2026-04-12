@@ -36,6 +36,9 @@ Scan the SKILL.md itself for slop (skills that contain slop will produce slop):
 | Hope closers | "Hope this helps!" | Warning |
 | Self-referential | "As an AI", "I'm here to help" | Warning |
 | Filler phrases | "It's important to note that" | Warning |
+| Copula avoidance | "serves as a", "stands as a", "functions as a" | Warning |
+| Promotional adjectives | "vibrant", "groundbreaking", "cutting-edge" | Warning |
+| Vague attributions | "Experts say", "Industry reports suggest" | Warning |
 
 **Regex patterns**:
 ```
@@ -49,6 +52,9 @@ Scan the SKILL.md itself for slop (skills that contain slop will produce slop):
 /Hope this helps/i
 /As an AI|I'm here to help/i
 /It's important to note that/i
+/(serves|stands|functions) as a/i
+/(vibrant|renowned|groundbreaking|breathtaking|nestled|stunning|cutting-edge|game-changing)/i
+/(experts|observers|industry reports?|some critics) (say|suggest|argue|believe|note)/i
 ```
 
 ## 5.4 Missing Anti-Slop Section Template
