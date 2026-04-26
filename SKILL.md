@@ -6,7 +6,7 @@ allowed-tools: Read Glob
 category: development
 compatibility: claude-code
 metadata:
-  version: 3.17.0
+  version: 3.20.0
   author: olgasafonova
 ---
 
