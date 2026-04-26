@@ -164,6 +164,23 @@ SkillCheck also recognizes good practices:
 
 Pro adds: threshold detection (22.1), consequence patterns (22.2), experience markers (22.3), debugging sequences (22.4), decision density (22.5), and concrete code references (22.6).
 
+### Plugin Manifest (24.x)
+
+When the input is a Claude Code plugin manifest (`.claude-plugin/plugin.json`), SkillCheck Free validates it against Anthropic's reference schema:
+
+| Check | What It Catches |
+|-------|-----------------|
+| 24.1 | `name` not in kebab-case |
+| 24.2 | `version` not canonical semver (no `v` prefix, must be MAJOR.MINOR.PATCH) |
+| 24.3 | `description` missing or empty |
+| 24.4 | `author.name` missing or empty |
+| 24.5 | Command file collides with bundled Claude Code commands (`simplify`, `batch`, `debug`, `loop`, `claude-api`, `security-review`) |
+| 24.6 | `.claude-plugin/` contains files other than `plugin.json` (commands/skills/hooks belong at plugin root) |
+
+Schema-floor rule: any rule that rejects Anthropic's own reference plugins is mis-calibrated. Validation stays compatible with the four-field minimum.
+
+Pro adds Cat 24 marketplace governance: cross-plugin dedup detection, naming convention enforcement against an org taxonomy, change-gate eval integration, maintainers and deprecation provenance recommendations, and cross-skill dependency graphs.
+
 ## Severity Levels
 
 | Level | Meaning | Action |
