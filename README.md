@@ -181,6 +181,18 @@ Schema-floor rule: any rule that rejects Anthropic's own reference plugins is mi
 
 Pro adds Cat 24 marketplace governance: cross-plugin dedup detection, naming convention enforcement against an org taxonomy, change-gate eval integration, maintainers and deprecation provenance recommendations, and cross-skill dependency graphs.
 
+### MCP Tool List (23.x, Free hook)
+
+When the input is an MCP server's `tools/list` response (standard MCP shape), SkillCheck Free surfaces two Agent Integration Readiness signals:
+
+| Check | What It Catches |
+|-------|-----------------|
+| 23.1-tool-count-high | Server exposes >20 tools (consider intent grouping or code-orchestration) |
+| 23.1-tool-count-strong | Server exposes >40 tools (strong code-orchestration candidate, Cloudflare 2-tool reference) |
+| 23.1-api-mirror | 3+ CRUD verb prefixes against the same noun (1:1 OpenAPI mirror smell) |
+
+Pro adds full Cat 23: CIMD-OAuth detection, MCP Apps usage, code-orchestration adoption, server-delivered skills pairing, remote vs local availability, destructive flag annotations, and user-vs-agent distinction enforcement.
+
 ## Severity Levels
 
 | Level | Meaning | Action |

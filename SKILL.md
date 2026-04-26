@@ -609,6 +609,46 @@ These ship in [SkillCheck Pro Cat 24](https://getskillcheck.com).
 
 ---
 
+# MCP Tool List Analysis (Category 23, Free hook)
+
+When the user provides an MCP server's `tools/list` response (a JSON file with the standard MCP shape `{"tools": [{"name": ..., "description": ...}, ...]}`), surface two Cat 23 (Agent Integration Readiness) signals.
+
+**When to apply:** the input file looks like an MCP `tools/list` response, OR the user asks to "check this MCP server's tools" or "is this server too big".
+
+### Check 23.1-tool-count-high
+
+**Rule:** servers exposing more than 20 tools should consider intent grouping or code-orchestration.
+
+**Severity:** Warning. **Fix:** group related operations into intent-shaped tools, or expose a `search_tools` + `execute` pair (Cloudflare reference: 2 tools total).
+
+### Check 23.1-tool-count-strong
+
+**Rule:** servers exposing more than 40 tools are strong candidates for the search+execute pattern.
+
+**Severity:** Warning. **Fix:** replace the tool surface with a 2-tool search+execute architecture.
+
+### Check 23.1-api-mirror
+
+**Rule:** when a single noun appears with 3 or more CRUD verb prefixes (`list_`, `get_`, `create_`, `update_`, `delete_`, `add_`, `remove_`, `set_`, `fetch_`, `patch_`), the tool surface looks like a 1:1 OpenAPI mirror rather than intent-shaped tools.
+
+**Detection:** for each tool name matching `^[a-z]+_(.+)$` where the prefix is in the API verb list, group by the noun. Flag any noun with 3+ distinct verb prefixes.
+
+**Severity:** Warning. **Fix:** rename tools toward intent (e.g. `find_user` or `manage_user_roles`) instead of mirroring REST verbs.
+
+### Out of scope (Pro tier)
+
+- CIMD-based OAuth detection
+- MCP Apps usage detection (resources, prompts, links)
+- Code-orchestration adoption check (search_tools + execute pattern presence)
+- Server-delivered skills pairing (Canva/Notion/Sentry cohort)
+- Remote vs local availability declaration
+- Destructive flag annotations per tool
+- User-vs-agent distinction enforcement
+
+These ship in [SkillCheck Pro Cat 23](https://getskillcheck.com) (Agent Integration Readiness, four pillars from Sam Morrow's framework populated with detection heuristics from Anthropic's six MCP production patterns).
+
+---
+
 # Pro Tier Features
 
 Available with [SkillCheck Pro](https://getskillcheck.com):
