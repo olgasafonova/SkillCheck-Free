@@ -540,6 +540,75 @@ Skill documents common failure points, edge cases, or footguns. Per Anthropic's 
 
 ---
 
+# Plugin Manifest Validation (Category 24)
+
+When the user provides a `.claude-plugin/plugin.json` file (Claude Code plugin manifest) instead of a SKILL.md, validate the manifest against Anthropic's reference schema.
+
+**When to apply:** the input file path ends in `.claude-plugin/plugin.json`, or the user explicitly asks to "check this plugin" or "validate plugin manifest".
+
+**Reference schema (Anthropic):** four required top-level fields. Any rule that rejects Anthropic's own reference plugins is mis-calibrated.
+
+```json
+{
+  "name": "product-management",
+  "version": "1.2.0",
+  "description": "Write feature specs, plan roadmaps...",
+  "author": { "name": "Anthropic" }
+}
+```
+
+### Check 24.1 — name format
+
+**Rule:** `name` is required and must be kebab-case: lowercase letters, digits, and hyphens; must start with a letter; no leading/trailing hyphens; no double hyphens.
+
+**Detection regex:** `^[a-z][a-z0-9]*(-[a-z0-9]+)*$`
+
+**Severity:** Critical. **Fix:** rename to lowercase-with-hyphens, e.g. `product-management`.
+
+### Check 24.2 — version is semver
+
+**Rule:** `version` is required and must be canonical semver (`MAJOR.MINOR.PATCH`, optional pre-release or build metadata). No `v` prefix.
+
+**Severity:** Critical. **Fix:** use `1.0.0`, not `v1.0` or `1.0`.
+
+### Check 24.3 — description present
+
+**Rule:** `description` is required and must be non-empty.
+
+**Severity:** Critical. **Fix:** add a one-paragraph summary of what the plugin does.
+
+### Check 24.4 — author.name present
+
+**Rule:** `author.name` is required and must be non-empty.
+
+**Severity:** Critical. **Fix:** add `"author": { "name": "Your Name" }`.
+
+### Check 24.5 — command name collision
+
+**Rule:** files in `commands/<name>.md` must not collide with bundled Claude Code slash commands.
+
+**Reserved names:** `simplify`, `batch`, `debug`, `loop`, `claude-api`, `security-review`.
+
+**Severity:** Critical. **Fix:** rename the colliding command file.
+
+### Check 24.6 — `.claude-plugin/` directory layout
+
+**Rule:** `.claude-plugin/` must contain only `plugin.json`. Skills, commands, hooks, and agents live at the plugin root, not nested under `.claude-plugin/`.
+
+**Severity:** Warning. **Fix:** move misplaced subdirectories to the plugin root.
+
+### Out of scope (Pro tier)
+
+- Cross-plugin dedup detection (description similarity)
+- Naming convention enforcement against an org's role taxonomy
+- Change-gate eval integration
+- Maintainers and deprecation provenance recommendations
+- Cross-skill dependency graphs
+
+These ship in [SkillCheck Pro Cat 24](https://getskillcheck.com).
+
+---
+
 # Pro Tier Features
 
 Available with [SkillCheck Pro](https://getskillcheck.com):
