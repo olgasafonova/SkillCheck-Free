@@ -19,6 +19,10 @@ redirect
 # These files are machine-specific and should not be shared across clones
 .sync.lock
 export-state/
+export-state.json
+
+# Daemon credential (32-byte secret used for daemon auth; never share across clones)
+.beads-credential-key
 
 # Ephemeral store (SQLite - wisps/molecules, intentionally not versioned)
 ephemeral.sqlite3
