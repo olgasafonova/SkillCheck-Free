@@ -5,7 +5,7 @@
 [![Claude Projects](https://img.shields.io/badge/Claude-Projects-orange?logo=anthropic&logoColor=white)](https://support.claude.com/en/articles/12512180-using-skills-in-claude)
 [![Cursor](https://img.shields.io/badge/Cursor-Rules-purple)](https://cursor.com/docs/context/rules)
 
-[![skillcheck passed](https://raw.githubusercontent.com/olgasafonova/skillcheck-free/main/skill-check/passed.svg)](https://getskillcheck.com)
+[![skillcheck passed](https://raw.githubusercontent.com/olgasafonova/skillcheck-free/main/skills/skill-check/passed.svg)](https://getskillcheck.com)
 
 Validate AI coding assistant skills against the [agentskills specification](https://agentskills.io). Works with Claude Code, Claude Desktop/Web, and Cursor. Catch issues before your users do.
 
@@ -22,17 +22,23 @@ SkillCheck validates:
 
 ### Claude Code
 
-Copy the `skill-check` folder to your Claude Code skills directory:
+The simplest path — use the [skills CLI](https://github.com/vercel-labs/skills):
 
 ```bash
-cp -r skill-check ~/.claude/skills/
+npx skills add olgasafonova/SkillCheck-Free
+```
+
+Or copy the folder manually:
+
+```bash
+cp -r skills/skill-check ~/.claude/skills/
 ```
 
 Or clone directly:
 
 ```bash
 git clone https://github.com/olgasafonova/SkillCheck-Free.git
-cp -r SkillCheck-Free/skill-check ~/.claude/skills/
+cp -r SkillCheck-Free/skills/skill-check ~/.claude/skills/
 ```
 
 ### Claude Desktop/Web (Projects)
@@ -40,7 +46,7 @@ cp -r SkillCheck-Free/skill-check ~/.claude/skills/
 1. Open [claude.ai](https://claude.ai) or Claude Desktop app
 2. Create a new Project (or open an existing one)
 3. Go to Project settings → Custom instructions
-4. Copy the contents of [`skill-check/SKILL.md`](skill-check/SKILL.md) (everything after the `---` frontmatter)
+4. Copy the contents of [`skills/skill-check/SKILL.md`](skills/skill-check/SKILL.md) (everything after the `---` frontmatter)
 5. Paste into the custom instructions field
 
 No file installation needed - the skill runs directly from your Project instructions.
