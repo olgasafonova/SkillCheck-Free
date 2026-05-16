@@ -68,6 +68,13 @@ mkdir -p .cursor/rules
 cp SkillCheck-Free/cursor-rules/skill-check.mdc .cursor/rules/
 ```
 
+## Where to find SkillCheck-Free
+
+SkillCheck-Free is listed in:
+
+- **[skills.sh registry](https://skills.sh/olgasafonova/SkillCheck-Free)** — install via `npx skills add olgasafonova/SkillCheck-Free`
+- **[antigravity-awesome-skills](https://github.com/sickn33/antigravity-awesome-skills)** — included in sickn33's 1,239+ universal agentic skills collection
+
 ## Usage
 
 In Claude Code, Claude Desktop/Web, or Cursor, say any of:
