@@ -1,7 +1,7 @@
 {
   "name": "skillcheck-free",
   "description": "Validates Claude Code SKILL.md files against ~25 contract rules including structure, triggers, anti-patterns, and naming. Works with Claude Code, Claude Desktop/Web, and Cursor.",
-  "version": "3.20.0",
+  "version": "3.20.1",
   "author": {
     "name": "Olga Safonova",
     "url": "https://github.com/olgasafonova"
