@@ -206,6 +206,23 @@ When the input is an MCP server's `tools/list` response (standard MCP shape), Sk
 
 Pro adds full Cat 23: CIMD-OAuth detection, MCP Apps usage, code-orchestration adoption, server-delivered skills pairing, remote vs local availability, destructive flag annotations, and user-vs-agent distinction enforcement.
 
+### OWASP Agentic Top 10 (26.x)
+
+Maps the OWASP Top 10 for Agentic Applications (2026) onto author-time text signals. The category only scores a skill with an agent surface (declares tools beyond Read/Glob/Grep, ingests external content, orchestrates subagents, or performs consequential actions); a plain text-formatting skill reports not-applicable. SkillCheck Free runs the 8 items with a deterministic signal:
+
+| Check | What It Catches |
+|-------|-----------------|
+| ASI-02 Tool Misuse | `allowed-tools: *`/`all` (critical), unconstrained `Bash`, or 5+ tools with no rationale |
+| ASI-03 Identity Abuse | caller-identity-override params (`as_user`, `impersonate`, `run_as`, etc.) |
+| ASI-04 Supply Chain | unpinned dependency installs (`pip install x`, `npm install x`, `npx x@latest`) |
+| ASI-05 Code Execution | `eval`/`exec`/`pickle.loads`/`subprocess shell=True` or `curl ... \| sh` |
+| ASI-08 Cascading Failure | uncapped loops or fan-out ("retry until", "loop until") |
+| ASI-09 Trust Exploitation | destructive op (`rm -rf`, `git push --force`, send/merge) with no confirmation gate nearby |
+| ASI-10 Rogue Agents | safeguard-disabling flags (`--no-verify`, `--force`) or long-running tasks with no kill switch |
+| ASI-11 Untraceability | consequential actions with zero logging/audit language |
+
+Pro adds the 7 grader items (ASI-01 goal hijack, ASI-06 memory poisoning, ASI-07 subagent trust, and the intent-reading halves of ASI-02/03/09/10): SkillCheck builds an evidence-loaded rubric pack and your own AI agent judges it, with no API key needed.
+
 ## Severity Levels
 
 | Level | Meaning | Action |

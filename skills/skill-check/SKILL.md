@@ -726,6 +726,42 @@ SkillCheck classifies each skill into one of five design patterns from the Googl
 
 ---
 
+## 6. OWASP Agentic Top 10 (deterministic)
+
+Maps the OWASP Top 10 for Agentic Applications (2026) onto author-time text signals. The full set is 11 items (ASI-01 through ASI-11). The Free tier runs the 8 items with a deterministic signal that needs no LLM. The 7 grader items that read intent are Pro; see the Pro teaser below.
+
+### Activation Gate
+
+Cat 26 only scores a skill that has an agent surface. The gate is two-stage.
+
+1. **Stage 1 (cheap scan)**: a surface is present if the skill declares tools beyond `Read`/`Glob`/`Grep`, ingests external content (`WebFetch`, `WebSearch`, `fetch`, `read URL`, `email body`, `transcript`, `user-supplied`, `scraped`, `mcp__.*read`), orchestrates subagents (`Agent`/`Task` tool, "spawn subagent", "delegate to"), or performs consequential actions (the destructive verb set plus external writes).
+2. **Stage 2 (deterministic rubric)**: if Stage 1 hits, run the 8 deterministic items below. If Stage 1 misses, report `not-applicable` rather than scoring zero. A Read-only text-formatting skill with no external ingestion reports `not-applicable`.
+
+Per-item `not-applicable` also applies: ASI-11 is N/A with no consequential actions. A per-item N/A is recorded as `skipped`, not pass and not fail.
+
+### Deterministic Items (8 of 11)
+
+Execute these by reasoning over the signals below. No binary runs; the prompt is the product.
+
+| Item | Signal to flag | Severity |
+|------|----------------|----------|
+| ASI-02 Tool Misuse | `allowed-tools: *` or `all` in frontmatter | Critical |
+| ASI-02 Tool Misuse | `allowed-tools` lists `Bash`, no constraint note nearby | Warning |
+| ASI-02 Tool Misuse | `allowed-tools` lists 5+ tools, no per-tool rationale | Suggestion |
+| ASI-03 Identity Abuse | identity-override param names (`as_user`, `act_as_user`, `on_behalf_of`, `impersonate`, `impersonate_as`, `ad_context_user`, `run_as`) in body or MCP schema | Critical |
+| ASI-04 Supply Chain | unpinned `pip install <pkg>` (no `==`/`<`/`>`/`~=`), `npm install <pkg>` (no `@version`), `go install <pkg>@latest`, `npx <pkg>@latest` | Warning |
+| ASI-05 Code Execution | `eval(`, `exec(`, `compile(`, `__import__(`, `pickle.loads`, `os.system(`, `subprocess` `shell=True`, `child_process`, `Function(` (scans inside code fences) | Warning |
+| ASI-05 Code Execution | `curl ... \| sh`, `wget ... \| bash` (pipe-to-shell) | Warning |
+| ASI-08 Cascading Failure | "retry until", "loop until", uncapped fan-out ("one subagent per item" with no cap) | Suggestion |
+| ASI-09 Trust Exploitation | destructive verb (`rm -rf`, `DROP TABLE`, `truncate`, `git push --force`, `force-push`, `delete`, `wipe`, "send money", "share externally", `merge`, "mass-edit") with no gate token (`confirm`, `ask the user`, `STOP:`, `approval`, `AskUserQuestion`) within plus-or-minus 10 lines | Warning |
+| ASI-10 Rogue Agents | `--no-verify`, `--force`, "skip validation", "bypass", "ignore the hook", `dangerouslyDisableSandbox` (unless paired with a user-approval note) | Warning |
+| ASI-10 Rogue Agents | long-running marker (`loop`, `polling`, `every N minutes`, `background`, `daemon`) with no kill-switch (`Ctrl+C`, `kill`, `cancel via`, `stop with`) or iteration cap | Warning |
+| ASI-11 Untraceability | consequential-action verb (`commit`, `push`, `publish`, `upload`, `POST`, `send`, `create`, `update`, or the ASI-09 destructive set) with zero traceability tokens (`log`, `audit`, `record`, `capture`, `correlation id`, `structured log`, `emit event`, `handoff`) anywhere in the skill | Warning |
+
+**Want the OWASP grader judgments?** [SkillCheck Pro](https://getskillcheck.com) adds the 7 grader items (ASI-01 goal hijack, ASI-06 memory poisoning, ASI-07 subagent trust, and the intent-reading halves of ASI-02/03/09/10). SkillCheck builds an evidence-loaded rubric pack and your own AI agent judges it, so no API key is needed.
+
+---
+
 ## Autonomy Design
 
 **Stop condition**: Stop after reporting all issues for the target SKILL.md. Do not iterate or re-check unless the user requests it.
