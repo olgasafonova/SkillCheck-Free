@@ -242,6 +242,7 @@ Pro adds the 7 grader items (ASI-01 goal hijack, ASI-06 memory poisoning, ASI-07
 | Quality patterns | Yes | Yes |
 | **Design Pattern Classification** | Detection | Deep checks |
 | **Knowledge Density** | Hollow content | Full density analysis |
+| **OWASP Agentic Top 10** | 8 deterministic checks | Grader pack your AI evaluates |
 | Artifact Contract Validation | - | Yes |
 | Trigger Collision Detection | - | Yes |
 | **Eval Kit (test prompt generation)** | - | Yes |
