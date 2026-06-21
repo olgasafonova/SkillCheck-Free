@@ -33,7 +33,7 @@ Check skills against Anthropic guidelines and the agentskills specification. Thi
 
 # Free Tier Validation Rules
 
-> Worked valid/invalid examples for every check below are in [reference/examples.md](reference/examples.md). The rules are here; the examples are one file away to keep this file scannable.
+> Worked valid/invalid examples for every check below are in [references/examples.md](references/examples.md). The rules are here; the examples are one file away to keep this file scannable.
 
 Apply these checks in order. Each subsection defines patterns to match and issues to flag.
 
@@ -140,7 +140,7 @@ Must contain:
 
 ### allowed-tools Validation
 
-Both space-separated (`allowed-tools: Read Glob`) and YAML list formats are valid. See reference/examples.md for both shapes.
+Both space-separated (`allowed-tools: Read Glob`) and YAML list formats are valid. See references/examples.md for both shapes.
 
 ### Directory Structure Validation
 
@@ -231,7 +231,7 @@ Skills that mention output should specify format with concrete examples.
 
 ### Description Trigger Style
 
-**Check 4.8-description-trigger-style** (Suggestion): The description field should read as a trigger condition, not a capability summary. Claude scans descriptions to decide "is there a skill for this request?" A trigger-oriented description activates correctly; a summary-oriented one gets overlooked.
+**Check 4.8-description-trigger-style** (Suggestion): The description field should read as a trigger condition, not a capability summary. Claude scans descriptions to decide "is there a skill for this request?" A trigger-oriented description activates when the request matches; a summary-oriented one gets overlooked.
 
 **Detection**: Description opens with summary patterns instead of trigger patterns:
 - Summary openers (flag): "This skill", "A tool that", "Provides", "Offers", "Handles", "Manages", "Enables"
@@ -277,7 +277,7 @@ Skills that mention output should specify format with concrete examples.
 
 **Check 22.7-hollow-content** (Suggestion): A gotchas/troubleshooting section that contains only generic filler and no concrete knowledge is hollow. It promises hard-won advice but delivers platitudes.
 
-**Detection**: In a `## Gotchas` / `## Troubleshooting` / `## Tips` / `## Caveats` / `## Pitfalls` section, fire when 3+ lines match generic filler ("follow team standards", "ensure proper handling", "handle appropriately", "consider relevant factors", "use appropriate methods", "maintain quality") AND no line carries a concrete knowledge signal (a specific threshold/number-with-unit, a consequence "X because Y", a numbered debugging step, or a file/function reference).
+**Detection**: In a `## Gotchas` / `## Troubleshooting` / `## Tips` / `## Caveats` / `## Pitfalls` section, fire when 3+ lines match generic filler (`follow team standards`, `ensure proper handling`, `handle appropriately`, `consider relevant factors`, `use appropriate methods`, `maintain quality`) AND no line carries a concrete knowledge signal (a specific threshold/number-with-unit, a consequence "X because Y", a numbered debugging step, or a file/function reference).
 
 **Exceptions** (not flagged): content inside code blocks; a section that includes at least one concrete threshold, consequence, or debugging step.
 
