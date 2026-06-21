@@ -202,6 +202,7 @@ Flag vague language that should be more specific. Terms like "multiple items" or
 
 **Exceptions** (not flagged):
 - Terms inside code blocks or blockquotes
+- Terms inside inline code spans (backticks); a backticked literal is a quoted example, not vague writing
 - Content in example/usage/pattern sections
 - Before/After and correct/incorrect comparison lines
 - Terms followed by qualifiers (e.g., "some specific files")
