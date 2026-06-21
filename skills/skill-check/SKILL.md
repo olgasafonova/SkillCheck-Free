@@ -478,6 +478,51 @@ description: Generate reports from data. Use when user says "weekly report" or "
 2. Run report generation
 </example>
 
+### Hollow Content
+
+**Check 22.7-hollow-content** (Suggestion): A gotchas/troubleshooting section that contains only generic filler and no concrete knowledge is hollow. It promises hard-won advice but delivers platitudes.
+
+**Detection**: In a `## Gotchas` / `## Troubleshooting` / `## Tips` / `## Caveats` / `## Pitfalls` section, fire when 3+ lines match generic filler ("follow team standards", "ensure proper handling", "handle appropriately", "consider relevant factors", "use appropriate methods", "maintain quality") AND no line carries a concrete knowledge signal (a specific threshold/number-with-unit, a consequence "X because Y", a numbered debugging step, or a file/function reference).
+
+**Exceptions** (not flagged): content inside code blocks; a section that includes at least one concrete threshold, consequence, or debugging step.
+
+<example type="invalid">
+## Gotchas
+
+- Follow team standards for error handling.
+- Ensure proper handling of edge cases.
+- Use appropriate methods and maintain quality.
+
+reason: Generic filler with no concrete knowledge — replace with specific thresholds, consequences, or steps.
+</example>
+
+<example type="valid">
+## Gotchas
+
+- Set retries to 3; the API returns 429 above 10 req/s.
+- If the upload fails, check the auth token first, then the file size limit (50 MB).
+</example>
+
+### Restraint Without Safety Carve-Out
+
+**Check 28.2-restraint-without-carveout** (Warning): If a skill instructs restraint/minimalism but never carves out validation, security, or accessibility, flag it. Restraint without that carve-out can reward skipping non-negotiables, not just avoiding gold-plating. "Lazy, not negligent" is the line.
+
+**Detection**: A restraint/anti-overbuild directive is present (YAGNI, "keep it minimal", "don't over-build / over-engineer", "simplest thing that works", "resist the urge to add", "prefer the stdlib"), AND no line pairs a keep/never-cut cue ("never cut", "always keep", "still required", "non-negotiable") with a safety noun (validation, security, accessibility / a11y). An incidental mention of "security" or "validation" *without* a keep cue does NOT count as a carve-out.
+
+**Does NOT fire when**: no restraint directive is present; or an explicit carve-out clause exists.
+
+**Severity**: Warning
+
+<example type="invalid">
+Keep it minimal. Use the simplest solution that works. Don't gold-plate.
+
+reason: Restraint directive with no validation/security/accessibility carve-out.
+</example>
+
+<example type="valid">
+Prefer the stdlib; resist the urge to add layers. But never skip validation, security, or accessibility. Those are non-negotiable.
+</example>
+
 ---
 
 ## 4. Quality Patterns (Strengths)
@@ -707,6 +752,10 @@ If validation stalls on large files (1000+ lines), break the skill into smaller 
 | 19.1-pattern-detected | Design Pattern Classification | Free |
 | 19.2-19.7 pattern-* | Design Pattern Deep Checks | **Pro** |
 | 20.*-collision-* | Trigger Collision Detection | **Pro** |
+| 22.7-hollow-content | Knowledge Density (hollow) | Free |
+| 22.1-22.6 density-* | Knowledge Density (signals) | **Pro** |
+| 28.2-restraint-without-carveout | Restraint (no carve-out) | Free |
+| 28.1-restraint-with-carveout | Restraint (with carve-out) | **Pro** |
 
 ---
 
