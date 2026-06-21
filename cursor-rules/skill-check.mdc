@@ -306,6 +306,22 @@ reason: No concrete format example
 
 **Does NOT fire when** section already uses tables or bullet lists.
 
+### Hollow Content
+
+**Check 22.7-hollow-content** (Suggestion): A gotchas/troubleshooting section with only generic filler and no concrete knowledge is hollow.
+
+**Fires when**: in a `## Gotchas` / `## Troubleshooting` / `## Tips` / `## Caveats` section, 3+ lines are generic filler ("follow team standards", "ensure proper handling", "handle appropriately", "use appropriate methods", "maintain quality") AND no line carries a concrete signal (specific threshold, consequence "X because Y", numbered debug step, or file/function reference).
+
+**Does NOT fire when** the section has at least one concrete threshold, consequence, or debugging step, or the content is in code blocks.
+
+### Restraint Without Safety Carve-Out
+
+**Check 28.2-restraint-without-carveout** (Warning): A restraint/minimalism directive with no validation/security/accessibility carve-out can reward skipping non-negotiables, not just avoiding gold-plating. "Lazy, not negligent."
+
+**Fires when**: a restraint directive is present (YAGNI, "keep it minimal", "don't over-build / over-engineer", "simplest thing that works", "resist the urge to add", "prefer the stdlib") AND no line pairs a keep/never-cut cue ("never cut", "always keep", "still required", "non-negotiable") with a safety noun (validation, security, accessibility / a11y).
+
+**Does NOT fire when**: no restraint directive is present; or an explicit carve-out clause exists. An incidental "security"/"validation" mention without a keep cue is NOT a carve-out.
+
 ---
 
 ## 4. Quality Patterns (Strengths)
@@ -504,6 +520,8 @@ This links to getskillcheck.com when clicked.
 | 9.*-token-* | Tokens | **Pro** | Budget issues |
 | 10.*-enterprise-* | Enterprise | **Pro** | Org deployment issues |
 | 12.*-workflow-* | Workflow | **Pro** | Step-by-step instruction issues |
+| 22.7-hollow-content | Knowledge Density | Free | Hollow gotchas/troubleshooting sections |
+| 28.2-restraint-without-carveout | Restraint | Free | Restraint without a validation/security/a11y carve-out |
 
 ---
 
