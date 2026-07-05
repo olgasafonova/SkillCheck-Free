@@ -2,3 +2,6 @@
 # Dolt database files (added by bd init)
 .dolt/
 *.db
+
+# beads issue tracker — internal, never publish
+.beads/
