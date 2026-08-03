@@ -152,7 +152,6 @@ Skills can include optional subdirectories per the agentskills spec:
 | `scripts/` | Executable code (Python, Bash, JS) | Should have execute permissions |
 | `assets/` | Static resources (templates, data) | No validation required |
 
-**Check 1.10-readme-in-folder** (Warning): Skill folder must not contain a `README.md` file. All documentation goes in SKILL.md or `references/`. For GitHub distribution, place the README at the repo root, outside the skill folder.
 
 **Detection**: Use Glob to check if `{skill-dir}/README.md` exists.
 
