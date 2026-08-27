@@ -21,13 +21,24 @@ Check skills against Anthropic guidelines and the agentskills specification. Thi
 - Any AI assistant with file Read capability (Claude Code, Cursor, Windsurf, Codex CLI)
 - Works on any platform (Unix/macOS/Windows)
 - No special tools required (Read-only)
+- No environment variables or API keys required; the checks run fully offline
 
-## How to Check a Skill
+## Interface
 
-1. **Locate**: Find target SKILL.md file(s)
-2. **Read**: Load the content
-3. **Validate**: Apply each rule section below
-4. **Report**: List issues found with severity and fixes
+- **Input**: path(s) to SKILL.md files, plus any `references/*.md` files in the same skill folder
+- **Output**: a validation report listing each issue with check ID, severity (Critical / Warning / Suggestion), line number, and fix; strengths reported in a separate list
+- **Modes**: runs standalone on a single skill or over a directory of skills, one report per skill
+
+## Workflow
+
+Run the four stages in order for each target skill. Data flows forward: the file list from Step 1 feeds Step 2, the loaded content feeds Step 3, and the findings feed Step 4.
+
+- **Step 1: Locate** — find target SKILL.md file(s) with Glob
+- **Step 2: Read** — load the SKILL.md content and any `references/` files
+- **Step 3: Validate** — apply each rule section below to the loaded content
+- **Step 4: Report** — list issues found with severity, line number, and fix
+
+**Execution limits**: maximum iterations: 1 validation pass per skill. Stop after every located skill has been reported once; abort if a SKILL.md cannot be read and say so in the report. The check is read-only and idempotent — safe to re-run, and repeated runs on unchanged files produce identical reports.
 
 ---
 
@@ -277,7 +288,16 @@ Skills that mention output should specify format with concrete examples.
 
 **Check 22.7-hollow-content** (Suggestion): A gotchas/troubleshooting section that contains only generic filler and no concrete knowledge is hollow. It promises hard-won advice but delivers platitudes.
 
-**Detection**: In a `## Gotchas` / `## Troubleshooting` / `## Tips` / `## Caveats` / `## Pitfalls` section, fire when 3+ lines match generic filler (`follow team standards`, `ensure proper handling`, `handle appropriately`, `consider relevant factors`, `use appropriate methods`, `maintain quality`) AND no line carries a concrete knowledge signal (a specific threshold/number-with-unit, a consequence "X because Y", a numbered debugging step, or a file/function reference).
+**Detection**: In a `## Gotchas` / `## Troubleshooting` / `## Tips` / `## Caveats` / `## Pitfalls` section, fire when 3+ lines match a generic filler phrase from the list below AND no line carries a concrete knowledge signal (a specific threshold/number-with-unit, a consequence "X because Y", a numbered debugging step, or a file/function reference).
+
+```text
+follow team standards
+ensure proper handling
+handle appropriately
+consider relevant factors
+use appropriate methods
+maintain quality
+```
 
 **Exceptions** (not flagged): content inside code blocks; a section that includes at least one concrete threshold, consequence, or debugging step.
 
@@ -295,7 +315,4 @@ Skills that mention output should specify format with concrete examples.
 
 ## 4. Quality Patterns (Strengths)
 
-Recognize positive patterns in skills. These are reported as "strengths" rather than issues.
-
-### 8.1 Has Example Section
-
+Recognize positive patterns in skills. These are reported as "strengths" rather than issues. Checks 8.1–8.9 detect: example sections, error handling, trigger phrases, output format, structured instructions, prerequisites, negative triggers, and gotchas sections. Detection patterns and worked examples for each are in [references/examples.md](references/examples.md).
