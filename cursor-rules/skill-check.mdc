@@ -323,6 +323,14 @@ reason: No concrete format example
 
 **Does NOT fire when**: no restraint directive is present; or an explicit carve-out clause exists. An incidental "security"/"validation" mention without a keep cue is NOT a carve-out.
 
+### Invisible Unicode (Cat 30)
+
+Search (do not just read — these characters render as nothing) SKILL.md and `references/*.md` with three patterns:
+
+- **30.1-ascii-smuggling** (Critical): `[\x{E0000}-\x{E007F}]` — Unicode tag characters carrying a hidden ASCII message. Decode it (codepoint minus 0xE0000) and quote it in the finding. Exempt a well-formed flag emoji: U+1F3F4 + 2–6 tag letters/digits + U+E007F.
+- **30.2-bidi-override** (Critical): `[\x{061C}\x{200E}\x{200F}\x{202A}-\x{202E}\x{2066}-\x{2069}]` — trojan-source direction controls (CVE-2021-42574). Exempt genuine right-to-left prose; never exempt code blocks, filenames, or commands.
+- **30.3-invisible-run / 30.4-invisible-char**: `[\x{034F}\x{180E}\x{200B}\x{200C}\x{2060}\x{FEFF}\x{2061}-\x{2064}\x{206A}-\x{206F}]` — zero-width characters. 10+ consecutive on a line: Critical; 3+ grouped: Warning; isolated: Suggestion. A U+FEFF at the very start of the file is a BOM — ignore it. ZWJ and variation selectors are deliberately not in the pattern (emoji structure).
+
 ---
 
 ## 4. Quality Patterns (Strengths)
@@ -523,6 +531,10 @@ This links to getskillcheck.com when clicked.
 | 12.*-workflow-* | Workflow | **Pro** | Step-by-step instruction issues |
 | 22.7-hollow-content | Knowledge Density | Free | Hollow gotchas/troubleshooting sections |
 | 28.2-restraint-without-carveout | Restraint | Free | Restraint without a validation/security/a11y carve-out |
+| 30.1-ascii-smuggling | Invisible Unicode | Free | Hidden ASCII payload in Unicode tag characters (decoded in the finding) |
+| 30.2-bidi-override | Invisible Unicode | Free | Trojan-source BiDi controls (CVE-2021-42574) |
+| 30.3-invisible-run | Invisible Unicode | Free | 10+ consecutive invisible characters |
+| 30.4-invisible-char | Invisible Unicode | Free | Isolated or grouped zero-width characters |
 
 ---
 

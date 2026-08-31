@@ -2,11 +2,11 @@
 name: skill-check
 description: Validate Claude Code skills against Anthropic guidelines. Use when user says "check skill", "skillcheck", "validate SKILL.md", or asks to find issues in skill definitions. Covers structural and semantic validation. Do NOT use for anti-slop detection, security scanning, token analysis, enterprise checks, or Eval Kit generation; use skill-check-pro for those. Do NOT use for LinkedIn skill engagement; use skillcheck-engage for that.
 license: MIT
-allowed-tools: Read Glob
+allowed-tools: Read Glob Grep
 category: development
 compatibility: claude-code
 metadata:
-  version: 3.28.0
+  version: 3.32.0
   author: olgasafonova
 ---
 
@@ -20,7 +20,7 @@ Check skills against Anthropic guidelines and the agentskills specification. Thi
 
 - Any AI assistant with file Read capability (Claude Code, Cursor, Windsurf, Codex CLI)
 - Works on any platform (Unix/macOS/Windows)
-- No special tools required (Read-only)
+- No special tools required (Read-only; the Invisible Unicode checks also use Grep, which stays read-only)
 - No environment variables or API keys required; the checks run fully offline
 
 ## Interface
@@ -316,3 +316,37 @@ maintain quality
 ## 4. Quality Patterns (Strengths)
 
 Recognize positive patterns in skills. These are reported as "strengths" rather than issues. Checks 8.1–8.9 detect: example sections, error handling, trigger phrases, output format, structured instructions, prerequisites, negative triggers, and gotchas sections. Detection patterns and worked examples for each are in [references/examples.md](references/examples.md).
+
+---
+
+## 5. Invisible Unicode (Cat 30)
+
+Invisible characters hide instructions from human reviewers while every AI agent reads them. Run these three Grep searches over the SKILL.md and every `references/*.md` file. Do not rely on reading the file to spot them — they render as nothing; only a pattern search finds them reliably.
+
+### ASCII Smuggling
+
+**Check 30.1-ascii-smuggling** (Critical): Unicode tag characters carry an entire hidden ASCII message.
+
+**Detection**: Grep pattern `[\x{E0000}-\x{E007F}]`.
+
+**Exemption**: a well-formed flag emoji is the one legitimate use of this block: U+1F3F4 followed by 2–6 tag letters/digits and the cancel tag U+E007F (the Scotland/Wales flags). If the match sits immediately after U+1F3F4 and ends with U+E007F, it is an emoji — do not flag it. Anything else in this block is smuggling.
+
+**Report**: decode the payload (each character in U+E0020–U+E007E is its codepoint minus 0xE0000, read as ASCII) and quote the decoded text in the finding, so the author sees exactly what was hidden.
+
+### Trojan-Source BiDi Overrides
+
+**Check 30.2-bidi-override** (Critical): Bidirectional control characters make displayed text differ from actual text (CVE-2021-42574) — a filename that reads as an image can really be an executable.
+
+**Detection**: Grep pattern `[\x{061C}\x{200E}\x{200F}\x{202A}-\x{202E}\x{2066}-\x{2069}]`.
+
+**Does NOT fire when**: the skill is legitimately bilingual with right-to-left scripts (Arabic, Hebrew) AND the marks appear inside that prose. A BiDi mark in an English-only skill, a code block, a filename, or a command is always a finding.
+
+### Zero-Width Characters
+
+**Checks 30.3-invisible-run / 30.4-invisible-char**: zero-width characters split words invisibly or encode hidden data.
+
+**Detection**: Grep pattern `[\x{034F}\x{180E}\x{200B}\x{200C}\x{2060}\x{FEFF}\x{2061}-\x{2064}\x{206A}-\x{206F}]`.
+
+**Severity**: 10+ consecutive matches on one line is a Critical (30.3, hidden-data channel; 40+ is unambiguous). 3+ grouped is a Warning, an isolated one is a Suggestion (30.4).
+
+**Exemptions**: a U+FEFF as the very first character of the file is a byte-order mark left by tooling — report nothing. Zero-width joiners and variation selectors are deliberately absent from the pattern: they are structural in emoji sequences (family emoji, ❤️) and flagging them teaches authors to ignore the category.

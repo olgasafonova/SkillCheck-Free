@@ -223,6 +223,16 @@ Maps the OWASP Top 10 for Agentic Applications (2026) onto author-time text sign
 
 Pro adds the 7 grader items (ASI-01 goal hijack, ASI-06 memory poisoning, ASI-07 subagent trust, and the intent-reading halves of ASI-02/03/09/10): SkillCheck builds an evidence-loaded rubric pack and your own AI agent judges it, with no API key needed.
 
+### Invisible Unicode (30.x)
+| Check | What It Catches |
+|-------|-----------------|
+| 30.1-ascii-smuggling | Instructions hidden in Unicode tag characters; the hidden payload is decoded and shown in the finding |
+| 30.2-bidi-override | Trojan-source BiDi controls (CVE-2021-42574) that make displayed text differ from actual text |
+| 30.3-invisible-run | Runs of 10+ consecutive invisible characters (hidden-data encoding channel) |
+| 30.4-invisible-char | Isolated or grouped zero-width characters |
+
+Legitimate emoji never fire: flag emoji tag sequences, zero-width joiners in family emoji, and variation selectors are all exempt, and a byte-order mark at file start is ignored.
+
 ## Severity Levels
 
 | Level | Meaning | Action |
