@@ -6,7 +6,7 @@ allowed-tools: Read Glob Grep
 category: development
 compatibility: claude-code
 metadata:
-  version: 3.32.0
+  version: 3.32.1
   author: olgasafonova
 ---
 
@@ -126,7 +126,7 @@ Not part of any spec. Used by community tools and registries.
 
 **Known artifact types**: `content-brief`, `knowledge-note`, `reading-log-entry`, `sift-article`
 
-**Check 1.10-artifact-types** (Warning): If `produces` or `consumes` contains a type not in the known list above, flag as a warning (not an error). New types are valid but should be registered in `rules/artifact-passing.md`.
+**Check 1.10-artifact-types** (Warning): If `produces` or `consumes` contains a type not in the known list above, flag as a warning (not an error). New types are valid; the known list is a starting set, not a registry.
 
 **Check 1.11-consumes-without-tools** (Warning): If a skill declares `consumes:` but its `allowed-tools` does not include `Read` or `Glob`, flag as a warning. Consuming artifacts requires reading files.
 
