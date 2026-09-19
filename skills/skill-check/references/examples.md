@@ -77,7 +77,7 @@ allowed-tools: Read, Glob, Bash
 reason: comma separation is deprecated; use spaces or YAML list
 </example>
 
-### Check 1.10-readme-in-folder
+### Directory Structure Validation
 
 <example type="valid">
 my-skill/
@@ -469,7 +469,7 @@ If validation stalls on large files (1000+ lines), break the skill into smaller 
 |----|----------|------|
 | 1.0-dir-*, 1.1-name-*, 1.2-desc-* | Structure | Free |
 | 1.3-tools-*, 1.4-category-* | Structure | Free |
-| 1.9-xml-in-frontmatter, 1.10-readme | Structure | Free |
+| 1.9-xml-in-frontmatter, 1.10-artifact-types | Structure | Free |
 | 2.*-body-*, 2.8-antipattern-format | Body | Free |
 | 3.*-name-* | Naming | Free |
 | 4.*-*, 4.6-wisdom, 4.8-trigger-style, 4.9-railroading | Semantic | Free |

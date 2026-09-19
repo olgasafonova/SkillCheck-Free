@@ -1,24 +1,26 @@
-# Marketplace Readiness (Category 8)
+# Marketplace Readiness (optional audit, IDs M.1–M.11)
 
 **Apply to**: All skills intended for public distribution.
 
 **Detection**: User says "marketplace audit", "ready to publish", or "distribution check".
 
-## 8.1 Description SEO
+**IDs**: These checks use the `M.` prefix. They are separate from Category 8 in SKILL.md, whose 8.1–8.9 IDs are strengths. Where a rule here overlaps a core check, the core check wins: M.1's action-verb row follows 4.8, and M.2's README row follows the agentskills spec, which allows any additional files in a skill folder.
+
+## M.1 Description SEO
 
 | Check | Rule | Severity |
 |-------|------|----------|
 | Keyword density | Contains searchable terms | Warning |
-| Action verb present | Starts with gerund (generating, creating, auditing) | Warning |
+| Action verb present | Opens with an action verb (Generate, Grade, Validate) or a "Use when" trigger, same as 4.8. Imperative and gerund forms both pass. | Warning |
 | Use case clarity | "Use when" pattern present | Critical |
 | Length optimization | 100-300 chars ideal for discovery | Suggestion |
 | No jargon | Accessible to non-experts | Suggestion |
 
 **Good description patterns**:
 ```
-✅ "Generating weekly reports from Azure DevOps. Use when user asks for sprint summary or team progress update."
+✅ "Generate weekly reports from Azure DevOps. Use when user asks for sprint summary or team progress update."
 
-✅ "Creating animated HTML slide decks with SVG visuals. Use when user says 'make slides' or 'presentation'."
+✅ "Create animated HTML slide decks with SVG visuals. Use when user says 'make slides' or 'presentation'."
 ```
 
 **Bad patterns**:
@@ -28,19 +30,19 @@
 ❌ "Does reports" (no use case, no keywords)
 ```
 
-## 8.2 Documentation Completeness
+## M.2 Documentation Completeness
 
 | Check | Rule | Severity |
 |-------|------|----------|
-| README present | README.md in skill folder | Warning |
+| README present | README.md at the repo root, where GitHub renders it. A README.md inside the skill folder also passes; the spec allows it. | Warning |
 | Installation steps | How to install/enable | Warning |
 | Usage examples | At least 2 usage examples | Warning |
 | Prerequisites listed | Dependencies documented | Warning |
 | Limitations noted | What it can't do | Suggestion |
 
-**README template**: See this skill's README.md for example structure.
+**README template**: See the SkillCheck-Free repo-root README.md for example structure.
 
-## 8.3 Example Coverage
+## M.3 Example Coverage
 
 | Check | Rule | Severity |
 |-------|------|----------|
@@ -51,7 +53,7 @@
 
 **Example section**: Include 3+ trigger phrases, sample input, sample output.
 
-## 8.4 Cross-Platform Compatibility
+## M.4 Cross-Platform Compatibility
 
 | Check | Rule | Severity |
 |-------|------|----------|
@@ -66,7 +68,7 @@
 - [ ] Tools used are widely available
 - [ ] No Claude-specific syntax in instructions
 
-## 8.5 License and Attribution
+## M.5 License and Attribution
 
 | Check | Rule | Severity |
 |-------|------|----------|
@@ -81,7 +83,7 @@
 - **Apache 2.0**: Includes patent protection
 - **Source-available**: View but not redistribute (like Anthropic doc skills)
 
-## 8.6 Versioning and Changelog
+## M.6 Versioning and Changelog
 
 | Check | Rule | Severity |
 |-------|------|----------|
@@ -89,7 +91,7 @@
 | Changelog | CHANGELOG.md or version history | Suggestion |
 | Breaking changes noted | Major version bumps explained | Suggestion |
 
-## 8.7 Quality Signals
+## M.7 Quality Signals
 
 | Check | Rule | Severity |
 |-------|------|----------|
@@ -108,7 +110,7 @@ XXX
 HACK:
 ```
 
-## 8.8 Marketplace Readiness Score
+## M.8 Marketplace Readiness Score
 
 Calculate overall readiness:
 
@@ -126,7 +128,7 @@ Readiness Level:
 
 **Marketplace Readiness Report**: Show score (🏆/🥈/🥉/❌), critical requirements, recommended improvements, optional enhancements as checklists.
 
-## 8.9 Marketplace Manifest (marketplace.json)
+## M.9 Marketplace Manifest (marketplace.json)
 
 Skills with `marketplace.json` receive special badges on SkillsMP and enable one-command installation.
 
@@ -149,7 +151,7 @@ keywords: 2-5 keywords from marketplace categories
 platforms: Array of supported platforms
 ```
 
-## 8.10 GitHub Repository Health
+## M.10 GitHub Repository Health
 
 SkillsMP filters repositories with minimum 2 stars. These checks apply when skill is hosted on GitHub.
 
@@ -165,7 +167,7 @@ SkillsMP filters repositories with minimum 2 stars. These checks apply when skil
 
 **Detection**: If skill folder is a git repo with GitHub remote, these checks apply.
 
-## 8.11 Skill Trust & Security Audit
+## M.11 Skill Trust & Security Audit
 
 Source: [Anthropic Agent Skills](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills)
 
