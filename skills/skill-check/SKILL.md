@@ -163,8 +163,7 @@ Skills can include optional subdirectories per the agentskills spec:
 | `scripts/` | Executable code (Python, Bash, JS) | Should have execute permissions |
 | `assets/` | Static resources (templates, data) | No validation required |
 
-
-**Detection**: Use Glob to check if `{skill-dir}/README.md` exists.
+Any other files, including a `README.md`, are allowed in the skill folder per the agentskills spec. Do not flag them.
 
 **Skill path formats supported**:
 - Standard: `~/.claude/skills/{skill-name}/SKILL.md`
