@@ -34,6 +34,60 @@ produces: Content_Brief
 reason: uppercase and underscore not allowed
 </example>
 
+### Field Recognition and Values (1.8, 1.11-1.19)
+
+<example type="valid">
+effort: xhigh
+user-invocable: No
+background: false
+context: fork
+shell: powershell
+paths: "src/**/*.ts, tests/**"
+</example>
+<example type="valid">
+paths:
+  - "docs/**/*.md"
+  - "*.mdx"
+</example>
+<example type="invalid">
+effort: extreme
+reason: 1.11-effort-invalid, not one of low, medium, high, xhigh, max
+</example>
+<example type="invalid">
+disable-model-invocation: maybe
+reason: 1.18-bool-value, booleans accept true/false/yes/no/on/off/1/0 only
+</example>
+<example type="invalid">
+disallowedTools: AskUserQuestion
+reason: 1.13-disallowed-camelcase, the skill field is disallowed-tools
+</example>
+<example type="invalid">
+maxTurns: 20
+reason: 1.12-maxturns-not-skill-field, subagent field ignored in SKILL.md
+</example>
+<example type="invalid">
+background: true
+reason: 1.16-background-no-fork, only applies with context: fork
+</example>
+<example type="invalid">
+shell: zsh
+reason: 1.15-shell-invalid, accepts bash or powershell
+</example>
+<example type="invalid">
+paths:
+  src: "**/*.go"
+reason: 1.17-paths-invalid, a map is not a glob string or list
+</example>
+<example type="invalid">
+descripton: Validate config files. Use when...
+reason: 1.8-unexpected-field, typo of description; Claude Code ignores it, claude.ai rejects the upload
+</example>
+<example type="invalid">
+when_to_use: Use when the user says "deploy"
+argument-hint: "[env]"
+reason: 1.19-non-portable-field (Suggestion), lists when_to_use and argument-hint; fine in Claude Code, rejected by claude.ai uploads and the Skills API
+</example>
+
 ### Name Validation
 
 <example type="valid">
