@@ -113,6 +113,16 @@ In Claude Code, Claude Desktop/Web, or Cursor, say any of:
 | 1.2-desc | Missing or weak description (WHAT verb + WHEN trigger recommended) |
 | 1.3-tools | Unknown or deprecated tool formats |
 | 1.4-category | Invalid category format |
+| 1.8-unexpected-field | Frontmatter key unknown to the spec, Claude Code and community conventions (Claude Code ignores it; claude.ai uploads reject it) |
+| 1.11-effort-invalid | `effort` not one of low, medium, high, xhigh, max |
+| 1.12-maxturns-not-skill-field | `maxTurns` is a subagent field, ignored in SKILL.md |
+| 1.13-disallowed-camelcase | `disallowedTools` used instead of `disallowed-tools` |
+| 1.14-listing-cap | `description` + `when_to_use` over 1,536 characters (skill listing truncates) |
+| 1.15-shell-invalid | `shell` not bash or powershell |
+| 1.16-background-no-fork | `background` set without `context: fork` |
+| 1.17-paths-invalid | `paths` not a glob string or list |
+| 1.18-bool-value | Boolean field not true/false/yes/no/on/off/1/0 |
+| 1.19-non-portable-field | Claude Code-only keys that claude.ai uploads and the Skills API reject |
 | 1.9-xml | XML angle brackets in frontmatter (prompt injection risk) |
 | 1.9-arg-hints | Missing argument-hint in frontmatter when $ARGUMENTS is used |
 | 1.10-readme | README.md inside skill folder (docs belong in SKILL.md) |

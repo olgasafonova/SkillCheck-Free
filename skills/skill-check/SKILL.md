@@ -6,7 +6,7 @@ allowed-tools: Read Glob Grep
 category: development
 compatibility: claude-code
 metadata:
-  version: 3.32.1
+  version: 3.33.0
   author: olgasafonova
 ---
 
@@ -80,37 +80,63 @@ Fields defined in the [agentskills.io](https://agentskills.io) specification:
 
 ### Claude Code Extensions
 
-Recognized by Claude Code but not part of the agentskills.io spec. Other agents may ignore these fields.
+Recognized by Claude Code (per the [Claude Code skills docs](https://code.claude.com/docs/en/skills)) but not part of the agentskills.io spec. Other agents may ignore these fields, and claude.ai uploads and the Skills API reject them (see 1.19).
+
+| Field | Purpose |
+|-------|---------|
+| `when_to_use` | Extra trigger context, appended to `description` in the skill listing |
+| `argument-hint` | Autocomplete hint for expected arguments |
+| `arguments` | Named positional arguments for `$name` substitution (space-separated string or YAML list) |
+| `model` | Override model (full ID like claude-opus-4-6, alias: opus, sonnet, haiku, or `inherit`) |
+| `effort` | Effort level: low, medium, high, xhigh, or max |
+| `disallowed-tools` | Tools removed while the skill is active (space- or comma-separated string, or YAML list) |
+| `context` | Run context ("fork" for sub-agent) |
+| `agent` | Agent type when context: fork |
+| `background` | With `context: fork`, set false to wait for the forked result (default: true) |
+| `hooks` | Lifecycle hooks (PreToolUse, PostToolUse, Stop) |
+| `paths` | Glob patterns that limit when the skill auto-activates (comma-separated string or YAML list) |
+| `shell` | Shell for inline commands: bash (default) or powershell |
+| `user-invocable` | Show in slash menu (default: true) |
+| `disable-model-invocation` | Manual-only skill |
+
+### Community Extensions
+
+Not part of any spec, and not read by Claude Code (it ignores them silently). Used by community tools and registries. Do not flag them under 1.8 or 1.19.
 
 | Field | Purpose |
 |-------|---------|
 | `category` | Skill domain(s) for discovery and filtering |
-| `model` | Override model (full ID like claude-opus-4-6 or alias: opus, sonnet, haiku) |
-| `effort` | Reasoning effort level: low, medium, or high |
-| `maxTurns` | Maximum agent turns (positive integer; warns above 100) |
-| `disallowedTools` | Tools the skill must not use (space-separated or YAML list) |
-| `context` | Run context ("fork" for sub-agent) |
-| `agent` | Agent type when context: fork |
-| `hooks` | Lifecycle hooks (PreToolUse, PostToolUse, Stop) |
-| `user-invocable` | Show in slash menu (default: true) |
-| `disable-model-invocation` | Manual-only skill |
 | `produces` | Artifact types this skill outputs (comma-separated) |
 | `consumes` | Artifact types this skill reads from other skills (comma-separated) |
-
-### Community Extensions
-
-Not part of any spec. Used by community tools and registries.
-
-| Field | Purpose |
-|-------|---------|
 | `type` | Skill type indicator |
 | `author` | Skill author |
 | `date` | Creation/update date |
-| `argument-hint` | Hints for skill arguments |
+
+### Field Recognition and Values
+
+**Check 1.8-unexpected-field** (Warning): A top-level key that appears in none of the three tables above (spec, Claude Code, community). Claude Code ignores unknown keys without reporting an error, so a typo silently does nothing; claude.ai uploads and the Skills API reject the file outright. Keys under `metadata` are free-form and never flagged.
+
+**Check 1.13-disallowed-camelcase** (Suggestion): `disallowedTools` is the subagent spelling. In SKILL.md the field is `disallowed-tools`; the camelCase key is ignored. Report this instead of 1.8.
+
+**Check 1.12-maxturns-not-skill-field** (Suggestion): `maxTurns` is a subagent field, not a skill field. Claude Code ignores it in SKILL.md. Report this instead of 1.8.
+
+**Check 1.19-non-portable-field** (Suggestion): One finding listing every Claude Code extension key present. Claude Code loads them, but claude.ai uploads and the Skills API accept only `name`, `description`, `license`, `compatibility`, `metadata` and `allowed-tools`.
+
+**Check 1.11-effort-invalid** (Warning): `effort` is not one of `low`, `medium`, `high`, `xhigh`, `max`.
+
+**Check 1.18-bool-value** (Warning): `user-invocable`, `disable-model-invocation` or `background` holds something other than `true`, `false`, `yes`, `no`, `on`, `off`, `1` or `0` (any letter case).
+
+**Check 1.14-listing-cap** (Warning): `description` plus `when_to_use` exceeds 1,536 characters. The skill listing truncates the combined text at that length, so trailing triggers are lost. Put the key use case first.
+
+**Check 1.15-shell-invalid** (Warning): `shell` is set to anything other than `bash` or `powershell`.
+
+**Check 1.16-background-no-fork** (Suggestion): `background` is set but `context: fork` is not. The field only applies to forked skills.
+
+**Check 1.17-paths-invalid** (Warning): `paths` is not a glob string (comma-separated allowed) or a YAML list of glob strings, for example a map, a number, a boolean, or an empty value.
 
 ### Category Validation
 
-> **Note**: `category` is a Claude Code extension, not part of the agentskills.io spec. Do not flag a missing category field. Only validate format if present.
+> **Note**: `category` is a community extension, not part of the agentskills.io spec. Do not flag a missing category field. Only validate format if present.
 
 **Format**: String or array of strings, lowercase letters, numbers, and hyphens only.
 
@@ -120,7 +146,7 @@ Not part of any spec. Used by community tools and registries.
 
 ### Artifact Passing Validation
 
-> **Note**: `produces` and `consumes` are Claude Code extensions for inter-skill artifact passing. Do not flag missing fields. Only validate format if present.
+> **Note**: `produces` and `consumes` are community extensions for inter-skill artifact passing. Do not flag missing fields. Only validate format if present.
 
 **Format**: Comma-separated list of artifact type names. Each type must be lowercase with hyphens only.
 
