@@ -122,7 +122,7 @@ In Claude Code, Claude Desktop/Web, or Cursor, say any of:
 | 1.16-background-no-fork | `background` set without `context: fork` |
 | 1.17-paths-invalid | `paths` not a glob string or list |
 | 1.18-bool-value | Boolean field not true/false/yes/no/on/off/1/0 |
-| 1.19-non-portable-field | Claude Code-only keys that claude.ai uploads and the Skills API reject |
+| 1.19-non-portable-field | Non-spec keys (Claude Code and community) that claude.ai uploads and the Skills API reject |
 | 1.9-xml | XML angle brackets in frontmatter (prompt injection risk) |
 | 1.9-arg-hints | Missing argument-hint in frontmatter when $ARGUMENTS is used |
 | 1.10-readme | README.md inside skill folder (docs belong in SKILL.md) |

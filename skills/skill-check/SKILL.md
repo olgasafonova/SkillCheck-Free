@@ -114,13 +114,13 @@ Not part of any spec, and not read by Claude Code (it ignores them silently). Us
 
 ### Field Recognition and Values
 
-**Check 1.8-unexpected-field** (Warning): A top-level key that appears in none of the three tables above (spec, Claude Code, community). Claude Code ignores unknown keys without reporting an error, so a typo silently does nothing; claude.ai uploads and the Skills API reject the file outright. Keys under `metadata` are free-form and never flagged.
+**Check 1.8-unexpected-field** (Suggestion): A top-level key that appears in none of the three tables above (spec, Claude Code, community). Claude Code ignores unknown keys without reporting an error, so a typo silently does nothing; claude.ai uploads and the Skills API reject the file outright. Keys under `metadata` are free-form and never flagged.
 
 **Check 1.13-disallowed-camelcase** (Suggestion): `disallowedTools` is the subagent spelling. In SKILL.md the field is `disallowed-tools`; the camelCase key is ignored. Report this instead of 1.8.
 
 **Check 1.12-maxturns-not-skill-field** (Suggestion): `maxTurns` is a subagent field, not a skill field. Claude Code ignores it in SKILL.md. Report this instead of 1.8.
 
-**Check 1.19-non-portable-field** (Suggestion): One finding listing every Claude Code extension key present. Claude Code loads them, but claude.ai uploads and the Skills API accept only `name`, `description`, `license`, `compatibility`, `metadata` and `allowed-tools`.
+**Check 1.19-non-portable-field** (Suggestion): One finding listing every key outside the spec that is present, from the Claude Code table and the community table alike. Claude Code loads or ignores them, but claude.ai uploads and the Skills API accept only `name`, `description`, `license`, `compatibility`, `metadata` and `allowed-tools`.
 
 **Check 1.11-effort-invalid** (Warning): `effort` is not one of `low`, `medium`, `high`, `xhigh`, `max`.
 
