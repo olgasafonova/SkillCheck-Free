@@ -3,9 +3,9 @@ name: skill-check
 description: Validate Claude Code skills against Anthropic guidelines. Use when user says "check skill", "skillcheck", "validate SKILL.md", or asks to find issues in skill definitions. Covers structural and semantic validation. Do NOT use for anti-slop detection, security scanning, token analysis, enterprise checks, or Eval Kit generation; use skill-check-pro for those. Do NOT use for LinkedIn skill engagement; use skillcheck-engage for that.
 license: MIT
 allowed-tools: Read Glob Grep
-category: development
 compatibility: claude-code
 metadata:
+  category: development
   version: 3.33.0
   author: olgasafonova
 ---
